@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="description" content="한화오션·삼성중공업·팬오션 업무 현황 및 조직 현황 - 재무 성과·임원·조직도">
+<title>고객사 관계사 업무 현황 및 조직 현황</title>
+<style>
+@property --accent{syntax:'<color>';inherits:true;initial-value:#3f6fb8;}
+@property --accent2{syntax:'<color>';inherits:true;initial-value:#4fa98a;}
+@property --bg{syntax:'<color>';inherits:true;initial-value:#ffffff;}
+@property --ink{syntax:'<color>';inherits:true;initial-value:#14171c;}
+
+:root{
+  /* black/white base */
+  --bg:#ffffff; --card:#ffffff; --ink:#14171c; --sub:#5c6270; --line:#e2e4e9;
+  --chip:#f2f3f6;
+  /* blue -> green pastel: rank scale + highlights */
+  --accent:#3f6fb8; --accent2:#4fa98a;
+  --rank-board:#3a5f9e; --rank-top:#4a7fc9; --rank-md:#3f9a92; --rank-dir:#4aab7c;
+  --good:#3f9a68; --on-accent:#ffffff;
+  --radius:14px; --shadow:0 2px 10px rgba(20,25,35,.07), 0 1px 2px rgba(20,25,35,.08);
+  --maxw:1180px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d0f14; --card:#171a21; --ink:#eef0f4; --sub:#9aa0ad; --line:#2a2e38;
+    --chip:#1e2229;
+    --accent:#8fb2e8; --accent2:#7fd4b2;
+    --rank-board:#7fa3e0; --rank-top:#8fb8ec; --rank-md:#63d0c4; --rank-dir:#7fdba0;
+    --good:#7fdba0; --on-accent:#0d0f14;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d0f14; --card:#171a21; --ink:#eef0f4; --sub:#9aa0ad; --line:#2a2e38;
+  --chip:#1e2229;
+  --accent:#8fb2e8; --accent2:#7fd4b2;
+  --rank-board:#7fa3e0; --rank-top:#8fb8ec; --rank-md:#63d0c4; --rank-dir:#7fdba0;
+  --good:#7fdba0; --on-accent:#0d0f14;
+  color-scheme: dark;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,BlinkMacSystemFont,sans-serif;line-height:1.5;
+  transition:background .5s ease, color .5s ease;}
+a{color:inherit;}
+.ic{flex:0 0 auto;display:inline-block;vertical-align:-3px;}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important;}
+  html{scroll-behavior:auto;}
+}
+
+/* ---------- header (flipped masthead: inverts against the page ground each theme) ---------- */
+header.top{background:var(--ink);color:var(--bg);padding:20px 20px 68px;transition:background .5s ease,color .5s ease;position:relative;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 16px;}
+.brandrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+.brand{font-size:13px;letter-spacing:.08em;opacity:.85;text-transform:uppercase;}
+.nav-controls{display:flex;align-items:center;gap:10px;}
+nav.companies{display:flex;gap:8px;flex-wrap:wrap;}
+nav.companies button{font:inherit;font-size:13px;padding:7px 13px;border-radius:999px;background:color-mix(in srgb, var(--bg) 14%, transparent);border:1px solid color-mix(in srgb, var(--bg) 30%, transparent);color:var(--bg);cursor:pointer;transition:background .25s ease,color .25s ease,transform .15s ease;}
+nav.companies button:hover{background:color-mix(in srgb, var(--bg) 24%, transparent);}
+nav.companies button.active{background:var(--bg);color:var(--ink);font-weight:700;}
+h1.title{font-size:27px;margin:16px 0 6px;font-weight:800;text-wrap:balance;transition:opacity .25s ease;}
+.subtitle{font-size:13.5px;opacity:.9;max-width:720px;transition:opacity .25s ease;}
+.updated-badge{display:inline-flex;align-items:center;gap:6px;background:color-mix(in srgb, var(--bg) 14%, transparent);border:1px solid color-mix(in srgb, var(--bg) 30%, transparent);padding:6px 12px;border-radius:999px;font-size:12px;margin-top:14px;}
+
+/* hamburger -- fixed, always reachable regardless of scroll position */
+.hamburger{width:42px;height:42px;position:fixed;top:14px;right:16px;z-index:78;background:var(--card);border:1px solid var(--line);border-radius:10px;cursor:pointer;box-shadow:var(--shadow);transition:background .5s ease,border-color .5s ease;}
+.hamburger span{position:absolute;left:11px;right:11px;height:2px;background:var(--ink);border-radius:2px;transition:transform .32s cubic-bezier(.5,0,.2,1),opacity .25s ease,top .32s cubic-bezier(.5,0,.2,1),background .5s ease;}
+.hamburger span:nth-child(1){top:15px;}
+.hamburger span:nth-child(2){top:21px;}
+.hamburger span:nth-child(3){top:27px;}
+.hamburger.open span:nth-child(1){top:21px;transform:rotate(45deg);}
+.hamburger.open span:nth-child(2){opacity:0;}
+.hamburger.open span:nth-child(3){top:21px;transform:rotate(-45deg);}
+
+/* drawer */
+.drawer-overlay{position:fixed;inset:0;background:rgba(8,11,18,.45);opacity:0;pointer-events:none;transition:opacity .3s ease;z-index:70;}
+.drawer-overlay.open{opacity:1;pointer-events:auto;}
+.drawer{position:fixed;top:0;right:0;height:100%;width:320px;max-width:88vw;background:var(--card);color:var(--ink);
+  box-shadow:-10px 0 34px rgba(0,0,0,.28);transform:translateX(100%);transition:transform .4s cubic-bezier(.16,1,.3,1),background .5s ease;
+  z-index:75;padding:68px 22px 26px;overflow-y:auto;}
+.drawer.open{transform:translateX(0);}
+.drawer h3{font-size:12.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--sub);margin:22px 0 10px;}
+.drawer h3:first-of-type{margin-top:0;}
+.drawer-hint{font-size:11.5px;color:var(--sub);margin:-4px 0 4px;}
+.drawer-co-btn{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;background:var(--chip);border:1px solid var(--line);color:var(--ink);padding:11px 14px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:8px;transition:background .2s ease,border-color .2s ease;}
+.drawer-co-btn.active{border-color:var(--accent);color:var(--accent);background:var(--chip);}
+.drawer-jump{display:block;width:100%;text-align:left;background:none;border:none;color:var(--ink);padding:9px 4px;border-radius:8px;font-size:13.5px;cursor:pointer;display:flex;align-items:center;gap:8px;}
+.drawer-jump:hover{background:var(--chip);}
+
+/* theme toggle (in drawer) */
+.theme-toggle{display:flex;gap:6px;margin-bottom:6px;}
+.theme-toggle button{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--chip);border:1px solid var(--line);color:var(--sub);padding:9px 4px 8px;border-radius:9px;font-size:11px;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease;}
+.theme-toggle button.active{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb, var(--accent) 12%, var(--chip));}
+
+/* ---------- main / pages ---------- */
+main#mainArea{max-width:var(--maxw);margin:-42px auto 60px;padding:0 16px;}
+.page{transition:opacity .34s ease, transform .34s ease;}
+.page:not(.active){opacity:0;transform:translateY(10px);}
+.page.leaving{opacity:0;transform:translateY(-10px);}
+.page.active{opacity:1;transform:translateY(0);}
+
+section.panel{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px;margin-bottom:22px;
+  transition:background .5s ease, box-shadow .5s ease; scroll-margin-top:20px;}
+section.panel h2{font-size:17px;margin:0 0 4px;display:flex;align-items:center;gap:8px;}
+section.panel .desc{font-size:13px;color:var(--sub);margin-bottom:16px;}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.stat{background:var(--chip);border-radius:10px;padding:14px 14px;text-align:left;transition:background .5s ease;}
+.stat .num{font-size:22px;font-weight:800;color:var(--accent);font-variant-numeric:tabular-nums;transition:color .5s ease;}
+.stat .lbl{font-size:12.5px;color:var(--sub);margin-top:2px;}
+
+.change-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+.change-list li{display:flex;gap:10px;font-size:13.5px;padding:10px 12px;border-left:3px solid var(--accent2);background:var(--chip);border-radius:0 8px 8px 0;transition:border-color .5s ease,background .5s ease;}
+.change-list .tag{flex:0 0 auto;font-size:11.5px;font-weight:700;color:var(--on-accent);background:var(--accent2);padding:2px 8px;border-radius:6px;height:fit-content;transition:background .5s ease;}
+.fnref{font-size:10.5px;white-space:nowrap;}
+.fnref a{color:var(--accent);font-weight:700;text-decoration:none;}
+.fnref a:hover{text-decoration:underline;}
+
+/* org chart */
+.orgchart-scroll{overflow-x:auto;overflow-y:hidden;padding-bottom:10px;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior-x:contain;}
+.orgchart-scroll::-webkit-scrollbar{height:9px;}
+.orgchart-scroll::-webkit-scrollbar-track{background:var(--chip);border-radius:6px;}
+.orgchart-scroll::-webkit-scrollbar-thumb{background:var(--sub);border-radius:6px;}
+.orgchart{display:flex;flex-direction:column;align-items:center;gap:0;width:max-content;min-width:100%;padding:10px 6px;}
+.org-node{background:var(--accent);color:var(--on-accent);border-radius:10px;padding:10px 18px;font-size:13.5px;font-weight:700;text-align:center;box-shadow:var(--shadow);white-space:nowrap;transition:background .5s ease,color .5s ease;}
+.org-node.ceo{background:var(--good);color:var(--on-accent);transition:background .5s ease,color .5s ease;}
+.org-node small{display:block;font-weight:400;font-size:11.5px;opacity:.85;margin-top:2px;}
+.org-connector{width:2px;height:20px;background:var(--line);}
+.org-row{display:flex;gap:14px;justify-content:center;flex-wrap:nowrap;position:relative;padding-top:20px;width:max-content;}
+.org-row::before{content:"";position:absolute;top:0;left:8%;right:8%;height:2px;background:var(--line);}
+.org-branch{display:flex;flex-direction:column;align-items:center;position:relative;flex:0 0 auto;}
+.org-branch::before{content:"";position:absolute;top:-20px;width:2px;height:20px;background:var(--line);}
+.org-unit{background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 14px;font-size:12.5px;text-align:center;min-width:150px;flex:0 0 auto;}
+.org-unit .role{font-weight:700;color:var(--accent);transition:color .5s ease;}
+.org-unit .person{font-size:12px;color:var(--sub);margin-top:2px;}
+.org-sub{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.org-sub .leaf{background:var(--chip);border-radius:7px;padding:6px 10px;font-size:11.5px;color:var(--ink);white-space:nowrap;}
+.scroll-hint{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--sub);margin-top:8px;justify-content:center;}
+.scroll-hint svg{width:14px;height:14px;}
+
+/* rank legend */
+.rank-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;}
+.rank-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:var(--sub);}
+.rank-chip i{width:10px;height:10px;border-radius:3px;display:inline-block;}
+.rank-chip.rb i{background:var(--rank-board);}
+.rank-chip.rt i{background:var(--rank-top);}
+.rank-chip.rm i{background:var(--rank-md);}
+.rank-chip.rd i{background:var(--rank-dir);}
+
+/* filters */
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
+.filterbar button{border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:999px;font-size:13px;cursor:pointer;color:var(--sub);transition:background .2s ease,color .2s ease,border-color .2s ease;}
+.filterbar button.active{background:var(--accent);color:var(--on-accent);border-color:var(--accent);}
+.searchbox{margin-left:auto;position:relative;}
+.searchbox input{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font-size:13px;width:200px;}
+
+/* cards (no avatar) */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.card{border:1px solid var(--line);border-left:5px solid var(--rank-dir);border-radius:10px;padding:14px 14px 14px 13px;cursor:pointer;background:var(--card);
+  transition:box-shadow .15s ease, transform .15s ease, background .5s ease, border-color .3s ease;position:relative;}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+.card:focus-visible{outline:2px solid var(--accent2);outline-offset:2px;}
+.card.rank-board{border-left-color:var(--rank-board);}
+.card.rank-top{border-left-color:var(--rank-top);}
+.card.rank-md{border-left-color:var(--rank-md);}
+.card.rank-dir{border-left-color:var(--rank-dir);}
+.rank-tag{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;}
+.rank-tag.rank-board{color:var(--rank-board);}
+.rank-tag.rank-top{color:var(--rank-top);}
+.rank-tag.rank-md{color:var(--rank-md);}
+.rank-tag.rank-dir{color:var(--rank-dir);}
+.card .nm{font-size:15px;font-weight:800;}
+.card .ttl{font-size:12.5px;color:var(--sub);margin-top:1px;}
+.badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.badge{font-size:10.5px;padding:2px 7px;border-radius:5px;background:var(--chip);color:var(--sub);font-weight:600;display:inline-flex;align-items:center;gap:4px;}
+.badge .ic{width:11px;height:11px;}
+.badge.new{background:color-mix(in srgb, var(--good) 16%, var(--chip));color:var(--good);}
+.badge.watch{background:var(--chip);color:var(--ink);border:1px solid var(--line);}
+.card .duty{font-size:12.5px;margin-top:8px;color:var(--ink);}
+
+.hint{font-size:11px;color:var(--sub);margin-top:20px;text-align:center;}
+
+/* modal */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(10,14,22,.55);z-index:80;align-items:flex-start;justify-content:center;padding:5vh 14px;overflow-y:auto;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--card);color:var(--ink);border-radius:16px;max-width:560px;width:100%;padding:26px 24px 22px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.35);
+  animation:modalIn .28s cubic-bezier(.2,.9,.3,1);}
+@keyframes modalIn{from{opacity:0;transform:translateY(14px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;font-size:22px;cursor:pointer;color:var(--sub);line-height:1;}
+.modal-head{margin-bottom:2px;}
+.rank-pill{display:inline-block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:999px;color:var(--on-accent);margin-bottom:8px;}
+.rank-pill.rank-board{background:var(--rank-board);}
+.rank-pill.rank-top{background:var(--rank-top);}
+.rank-pill.rank-md{background:var(--rank-md);}
+.rank-pill.rank-dir{background:var(--rank-dir);}
+.modal-head h3{margin:0;font-size:20px;}
+.modal-head .ttl{color:var(--sub);font-size:13.5px;margin-top:2px;}
+.photo-links{display:flex;gap:8px;margin:12px 0 16px;flex-wrap:wrap;}
+.photo-links a{font-size:12px;padding:6px 11px;border-radius:8px;background:var(--chip);text-decoration:none;color:var(--accent);font-weight:600;}
+.kv{display:grid;grid-template-columns:100px 1fr;gap:6px 10px;font-size:13.5px;margin-bottom:14px;}
+.kv dt{color:var(--sub);}
+.kv dd{margin:0;}
+.career-box{background:var(--chip);border-radius:10px;padding:12px 14px;font-size:13px;white-space:pre-line;line-height:1.65;}
+.updated-note{margin-top:14px;font-size:12px;padding:10px 12px;border-radius:8px;display:flex;gap:7px;align-items:flex-start;}
+.updated-note .ic{margin-top:1px;}
+.updated-note.ok{background:color-mix(in srgb, var(--good) 14%, var(--chip));color:var(--good);}
+.updated-note.watch{background:var(--chip);color:var(--ink);border:1px solid var(--line);}
+.updated-note a{color:inherit;text-decoration:underline;}
+
+/* financial performance table */
+.fin-table-wrap{overflow-x:auto;}
+.fin-table{width:100%;border-collapse:collapse;font-size:13.5px;font-variant-numeric:tabular-nums;}
+.fin-table th,.fin-table td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap;}
+.fin-table th:first-child,.fin-table td:first-child{text-align:left;}
+.fin-table thead th{color:var(--sub);font-weight:600;font-size:12px;background:var(--chip);}
+.fin-table tbody tr:last-child td{border-bottom:none;}
+.fin-table tr.fin-latest td{font-weight:800;color:var(--ink);background:color-mix(in srgb, var(--accent) 8%, transparent);}
+.fin-table .fin-neg{color:var(--sub);}
+.fin-table .fin-est{font-weight:400;color:var(--sub);}
+.fin-est-mark{font-size:10.5px;color:var(--sub);font-weight:600;vertical-align:2px;}
+.fin-note{font-size:11.5px;color:var(--sub);margin-top:10px;}
+
+/* memo panel */
+.memo-panel .memo-date{font-size:11.5px;font-weight:400;color:var(--sub);}
+.memo-box{background:var(--chip);border-radius:10px;padding:12px 14px;transition:background .5s ease;}
+.memo-box p{font-size:13px;margin:0 0 8px;line-height:1.6;}
+.memo-box p:last-child{margin-bottom:0;}
+.memo-box p.memo-note{color:var(--sub);font-size:12px;margin-top:10px;}
+
+/* footnotes */
+.fn-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;counter-reset:none;}
+.fn-list li{font-size:12.5px;color:var(--sub);display:flex;gap:8px;align-items:baseline;padding:8px 10px;border-radius:8px;background:var(--chip);scroll-margin-top:20px;}
+.fn-num{flex:0 0 auto;font-weight:800;color:var(--accent);min-width:16px;}
+.fn-list a{color:var(--ink);font-weight:600;text-decoration:none;}
+.fn-list a:hover{text-decoration:underline;}
+.fn-source{color:var(--sub);}
+
+footer.pagefoot{font-size:11.5px;color:var(--sub);text-align:center;padding:6px 0 4px;}
+
+@media (max-width:980px){
+  .grid{grid-template-columns:repeat(3,1fr);}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media (max-width:680px){
+  nav.companies{display:none;}
+  .grid{grid-template-columns:repeat(2,1fr);}
+  h1.title{font-size:21px;}
+  .searchbox{margin-left:0;width:100%;}
+  .searchbox input{width:100%;}
+  .kv{grid-template-columns:82px 1fr;}
+}
+@media (max-width:420px){
+  .grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brandrow">
+      <div class="brand">고객사 관계사 업무 현황 및 조직 현황</div>
+      <div class="nav-controls">
+        <nav class="companies" id="companyNav">
+          <button data-co="ho" class="active">한화오션</button>
+          <button data-co="sh">삼성중공업</button>
+          <button data-co="po">팬오션</button>
+        </nav>
+        <button class="hamburger" id="hamburgerBtn" aria-label="메뉴 열기" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <h1 class="title" id="pageTitle">한화오션(주) 임원 현황 &amp; 조직도</h1>
+    <div class="subtitle" id="pageSubtitle"></div>
+    <div class="updated-badge"><svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11A8 8 0 0 0 6.3 6.3L4 8.6"/><polyline points="4 4 4 8.6 8.6 8.6"/><path d="M4 13a8 8 0 0 0 13.7 4.7L20 15.4"/><polyline points="20 20 20 15.4 15.4 15.4"/></svg><span id="pageBadge"></span></div>
+  </div>
+</header>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-hint">우측 상단 버튼을 다시 누르면 닫힙니다</div>
+  <h3>테마</h3>
+  <div class="theme-toggle" id="themeToggle">
+    <button data-theme="system" class="active"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="1.5"/><line x1="8" y1="20.5" x2="16" y2="20.5"/><line x1="12" y1="17" x2="12" y2="20.5"/></svg>시스템</button>
+    <button data-theme="light"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.7" y1="4.7" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19.3" y2="19.3"/><line x1="4.7" y1="19.3" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19.3" y2="4.7"/></svg>라이트</button>
+    <button data-theme="dark"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11z"/></svg>다크</button>
+  </div>
+  <h3>회사 전환</h3>
+  <button class="drawer-co-btn active" data-co="ho">한화오션</button>
+  <button class="drawer-co-btn" data-co="sh">삼성중공업</button>
+  <button class="drawer-co-btn" data-co="po">팬오션</button>
+  <h3>이 페이지 바로가기</h3>
+  <div id="drawerJumps"></div>
+</aside>
+
+<main id="mainArea">
+<section class="page active" id="page-ho" data-title="한화오션(주) 임원 현황 &amp; 조직도" data-subtitle="DART 전자공시(2025.07 반기보고서 기준) 데이터를 기반으로, 2025.11 정기임원인사 및 2026.03 정기주주총회 공개 정보를 반영해 갱신했습니다. 카드를 클릭하면 상세 프로필이 열립니다." data-badge="최종 업데이트 2026-08-24 · 원본: DART 2025.07 / 갱신: 2025.11, 2026.03 공시·보도 반영 · 최근 3개년 재무 성과 추가">
+<section class="panel" id="ho-summary">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> 요약</h2>
+    <div class="desc">등록된 임원 수 및 최근 6개월간 확인된 주요 변동사항입니다.</div>
+    <div class="stat-grid">
+      <div class="stat"><div class="num" id="statTotal-ho">-</div><div class="lbl">전체 등재 임원</div></div>
+      <div class="stat"><div class="num" id="statBoard-ho">-</div><div class="lbl">등기임원(이사회)</div></div>
+      <div class="stat"><div class="num">5 / 8</div><div class="lbl">사외이사 / 전체 이사 (2026.03 기준)</div></div>
+      <div class="stat"><div class="num" id="statNew-ho">-</div><div class="lbl">최근 승진·신규선임</div></div>
+    </div>
+  </section>
+<section class="panel" id="ho-financials">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> 최근 3개년 재무 성과</h2>
+    <div class="desc">연결재무제표 기준 매출액·영업이익 추이입니다. 2023년은 옛 대우조선해양 인수(2023.05 한화오션 출범) 이후 첫 회계연도입니다.</div>
+    <div class="fin-table-wrap">
+      <table class="fin-table">
+        <thead><tr><th>회계연도</th><th>매출액</th><th>영업이익</th><th>영업이익률</th></tr></thead>
+        <tbody>
+          <tr><td>2023<span class="fin-est-mark">*</span></td><td class="fin-est">약 7조 4,080억원</td><td class="fin-neg">-196억원 (적자)</td><td class="fin-neg">-0.3%</td></tr>
+          <tr><td>2024</td><td>10조 7,760억원</td><td>2,379억원</td><td>2.2%</td></tr>
+          <tr class="fin-latest"><td>2025<span class="badge new">최근</span></td><td>12조 6,884억원</td><td>1조 1,091억원</td><td>8.7%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fin-note">2025년 영업이익은 2018년 이후 7년 만에 1조원을 돌파(전년비 +366.2%) — 고마진 LNG운반선 비중 확대가 주요 요인. *2023년 매출은 2024년 실적발표에 명시된 전년 대비 증감률(+45.5%)로 역산한 추정치입니다. <sup class="fnref">[<a href="#fn-ho-11">11</a>, <a href="#fn-ho-12">12</a>]</sup></div>
+  </section>
+<section class="panel" id="ho-changes">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12,2 14.9,9 22,9.5 16.5,14.3 18.2,21.5 12,17.5 5.8,21.5 7.5,14.3 2,9.5 9.1,9"/></svg> 최근 확인된 주요 변동사항</h2>
+    <div class="desc">웹 공개 보도자료·공시를 근거로 확인한 사항만 기재했습니다. 표기가 없는 인물은 2025.07 DART 스냅샷을 그대로 유지한 것으로, 2026년 최신 재직 여부는 별도 확인이 필요합니다.</div>
+    <ul class="change-list">
+      <li><span class="tag">2026.03</span> 김희철 사장, 대표이사·사내이사 재선임 (임기 3년, ~2029.03) <sup class="fnref">[<a href="#fn-ho-1">1</a>, <a href="#fn-ho-2">2</a>]</sup></li>
+      <li><span class="tag">2026.03</span> 김영삼(KEI컨설팅 대표) · 이효진(성균관대 법전원 부교수) 사외이사 겸 감사위원 신규 선임 — 개정 상법에 따라 감사위원 1명→2명 확대. 선임 후 이사회 총 8명(사외이사 5명, 62.5%) <sup class="fnref">[<a href="#fn-ho-3">3</a>]</sup></li>
+      <li><span class="tag">2025.11</span> 장연성(상무→전무 승진) 재무실장(CFO) 선임 — 신용인 부사장 후임 <sup class="fnref">[<a href="#fn-ho-4">4</a>, <a href="#fn-ho-5">5</a>]</sup></li>
+      <li><span class="tag">2025.11</span> 정기 임원인사 신규 상무 12명 승진(연구·설계·생산 7명, 사업관리·지원 5명) — 개별 보직은 미공개 <sup class="fnref">[<a href="#fn-ho-6">6</a>, <a href="#fn-ho-7">7</a>]</sup></li>
+      <li><span class="tag">확인필요</span> 김동관 기타비상무이사·조지 P.부시/현낙희/최훈/김봉환/안완기 사외이사의 2026.03 주총 이후 재직 지속 여부는 개별 기사로 확인되지 않아 2025.07 기준으로 표기했습니다.</li>
+    </ul>
+  </section>
+<section class="panel" id="ho-org">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><line x1="12" y1="6" x2="12" y2="11"/><line x1="12" y1="11" x2="5" y2="16"/><line x1="12" y1="11" x2="19" y2="16"/></svg> 조직도 (사업부문 기준 추정)</h2>
+    <div class="desc">공개 정보로 추정한 구조입니다. 점선·괄호 표기는 확정되지 않은 추정 라인입니다. 좌우로 스크롤하여 전체를 확인하세요.</div>
+    <div class="orgchart-scroll">
+      <div class="orgchart">
+        <div class="org-node ceo">대표이사 김희철 사장<small>사내이사 · 2026.03 재선임</small></div>
+        <div class="org-connector"></div>
+        <div class="org-row">
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">상선사업부문</div><div class="person">김종서 사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">상선기술본부 · 문승한 전무</div>
+              <div class="leaf">상선생산본부 · 김창용 전무</div>
+              <div class="leaf">상선구매본부 · 신호우 전무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">해양사업부문</div><div class="person">Philippe Levy 사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">Offshore GPO · 유동완 부사장</div>
+              <div class="leaf">Head of WTIV · 석종선 상무</div>
+              <div class="leaf">해양생산담당 · 노왕현 상무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">특수선사업부문</div><div class="person">어성철 사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">특수선해외사업단 · 정승균 부사장</div>
+              <div class="leaf">방산기술연구센터 · 김건호 상무</div>
+              <div class="leaf">특수선사업관리 · 김규백 상무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">경영지원부문</div><div class="person">(추정) 류두형 사장 총괄</div></div>
+            <div class="org-sub">
+              <div class="leaf">경영기획실 · 류두형 사장</div>
+              <div class="leaf">재무실(CFO) · 장연성 전무</div>
+              <div class="leaf">대외협력실 · 정인섭 사장</div>
+              <div class="leaf">컴플라이언스실 · 이광석 상무</div>
+              <div class="leaf">HR실 · 이상현 상무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">제조/기술총괄</div><div class="person">이길섭 부사장 · 손영창 부사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">제조총괄 · 이길섭 부사장</div>
+              <div class="leaf">제품전략기술원 · 손영창 부사장</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="scroll-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 12l4-4M5 12l4 4M19 12l-4-4M19 12l-4 4"/></svg> 좌우로 드래그하거나 스크롤하여 전체 조직도를 확인하세요</div>
+  </section>
+<section class="panel" id="ho-profiles">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14c2.5.3 4.5 2.5 4.5 6"/></svg> 임원 프로필</h2>
+    <div class="desc">사진은 등기임원·대표이사급만 실사진 검색 링크를 크게 제공하고, 그 외 인물은 구글·네이버 인물 검색 링크를 제공합니다. 실제 이미지 파일은 저작권·핫링크 안정성 문제로 직접 삽입하지 않았습니다. 카드 좌측 색상은 이니셜이 아니라 <b>직급 구분</b>을 나타냅니다.</div>
+    <div class="rank-legend">
+      <span class="rank-chip rb"><i></i>등기임원(이사회)</span>
+      <span class="rank-chip rt"><i></i>사장단·대표·부사장</span>
+      <span class="rank-chip rm"><i></i>전무</span>
+      <span class="rank-chip rd"><i></i>상무·상무보</span>
+    </div>
+    <div class="filterbar">
+      <button class="active" data-f="all">전체</button>
+      <button class="" data-f="board">등기임원(이사회)</button>
+      <button class="" data-f="top">사장단</button>
+      <button class="" data-f="vp">부사장</button>
+      <button class="" data-f="md">전무</button>
+      <button class="" data-f="dir">상무</button>
+      <button class="" data-f="new">2025.11 신규 승진</button>
+      <div class="searchbox"><input type="text" id="searchInput-ho" placeholder="이름 또는 담당업무 검색"></div>
+    </div>
+    <div class="grid" id="cardGrid-ho"></div>
+    <div class="hint">총 <span id="resultCount-ho">0</span>명 표시 중</div>
+  </section>
+<section class="panel memo-panel" id="ho-memo">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg> 실무 접점 메모 <span class="memo-date">(2023.11.24 회의 참고)</span></h2>
+    <div class="memo-box">
+      <p>· <b>조형준</b> 팀장(구매8팀, 한화 출신 추정) — 2023.11 메가라인 중국항로 이탈·양식장 침범 보상 관련 문의 담당. 11.7 메가라인 공식 답변 이후 후속 피드백 없음.</p>
+      <p>· <b>이혜영</b> 책임(구매8팀) — 대우 출신, 2023년 거제→서울 발령. 2023년 사급제 분실 건 담당 이력.</p>
+      <p>· 2023.10 메가패션 float-off 중 골드마린11호 손상 건은 골드마린 선사 자체 보험 처리로 종결(한화오션 내부 상부 보고 없음).</p>
+      <p class="memo-note">※ 상기 메모는 2023.11.24 회의 기준 원본 기록이며, 최신 담당자 변경 여부는 재확인이 필요합니다.</p>
+    </div>
+  </section>
+<section class="panel footnotes-panel" id="ho-sources">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg> 출처 · 각주</h2>
+    <div class="desc">한화오션 카드·변동사항에 인용된 출처입니다. 번호를 클릭하면 원문 기사로 이동합니다.</div>
+    <ol class="fn-list">
+      <li id="fn-ho-1"><span class="fn-num">1</span> <a href="https://www.getnews.co.kr/news/articleView.html?idxno=865135" target="_blank" rel="noopener">한화오션, 김희철 사장 대표이사·사내이사 재선임</a> <span class="fn-source">— getnews</span></li>
+<li id="fn-ho-2"><span class="fn-num">2</span> <a href="https://www.ngonews.kr/news/articleView.html?idxno=226607" target="_blank" rel="noopener">한화오션, 김희철 사장 대표 재선임…감사위원 2명 임명</a> <span class="fn-source">— 한국NGO신문</span></li>
+<li id="fn-ho-3"><span class="fn-num">3</span> <a href="https://www.digitaltoday.co.kr/news/articleView.html?idxno=643200" target="_blank" rel="noopener">한화오션, 제26기 재무제표 승인·정관 변경 등 정기주총 안건 가결</a> <span class="fn-source">— 디지털투데이</span></li>
+<li id="fn-ho-4"><span class="fn-num">4</span> <a href="https://www.thebell.co.kr/front/newsview.asp?key=202511190959324960101192" target="_blank" rel="noopener">[한화의 CFO] '운용형 CFO' 장연성 한화오션 전무</a> <span class="fn-source">— 더벨</span></li>
+<li id="fn-ho-5"><span class="fn-num">5</span> <a href="https://www.bloter.net/news/articleView.html?idxno=647418" target="_blank" rel="noopener">한화오션, 2년 만에 '신용인→장연성' CFO 리더십 교체</a> <span class="fn-source">— 블로터</span></li>
+<li id="fn-ho-6"><span class="fn-num">6</span> <a href="https://www.etoday.co.kr/news/view/2522441" target="_blank" rel="noopener">한화오션, 12명 임원 승진 인사 발표</a> <span class="fn-source">— 이투데이</span></li>
+<li id="fn-ho-7"><span class="fn-num">7</span> <a href="https://biz.heraldcorp.com/article/10609559" target="_blank" rel="noopener">한화오션, 연구·설계·생산 등 신임 임원 12명 승진</a> <span class="fn-source">— 헤럴드경제</span></li>
+<li id="fn-ho-8"><span class="fn-num">8</span> <a href="https://www.linkedin.com/in/philippe-levy-b8b2aa29/" target="_blank" rel="noopener">Philippe Levy - President, Hanwha Ocean (Offshore)</a> <span class="fn-source">— LinkedIn</span></li>
+<li id="fn-ho-9"><span class="fn-num">9</span> <a href="https://m.thebell.co.kr/m/newsview.asp?newskey=202406191325368160109195" target="_blank" rel="noopener">[한화오션을 움직이는 사람들] '해외통' 김종서 사장</a> <span class="fn-source">— 더벨 · 2024.06</span></li>
+<li id="fn-ho-10"><span class="fn-num">10</span> <a href="https://dart.fss.or.kr/" target="_blank" rel="noopener">한화오션 2025.07 반기보고서 (원본 데이터)</a> <span class="fn-source">— DART 전자공시시스템</span></li>
+<li id="fn-ho-11"><span class="fn-num">11</span> <a href="https://www.hanwha.co.kr/newsroom/media_center/news/news_view.do?seq=13961" target="_blank" rel="noopener">한화오션, 24년 매출 10조 7,760억원 영업이익 2,379억원</a> <span class="fn-source">— 한화그룹 뉴스룸</span></li>
+<li id="fn-ho-12"><span class="fn-num">12</span> <a href="https://v.daum.net/v/20260204202125114" target="_blank" rel="noopener">한화오션, 7년 만에 영업이익 1조원 돌파… 전년比 366%↑</a> <span class="fn-source">— Daum 뉴스 · 2026.02</span></li>
+    </ol>
+  </section>
+</section>
+<section class="page" id="page-sh" data-title="삼성중공업(주) 임원 현황 &amp; 조직도" data-subtitle="DART 전자공시(2023.06.30 사업보고서 기준) 데이터를 기반으로, 2024.12·2025.11 정기 임원인사 등 공개 보도를 반영해 갱신했습니다. 카드를 클릭하면 상세 프로필이 열립니다." data-badge="최종 업데이트 2026-08-24 · 원본: DART 2023.06 / 갱신: 2024.12, 2025.11 인사 반영 · 최근 3개년 재무 성과 추가" style="display:none">
+<section class="panel" id="sh-summary">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> 요약</h2>
+    <div class="desc">등록된 임원 수 및 최근 확인된 주요 변동사항입니다.</div>
+    <div class="stat-grid">
+      <div class="stat"><div class="num" id="statTotal-sh">-</div><div class="lbl">전체 등재 임원</div></div>
+      <div class="stat"><div class="num" id="statBoard-sh">-</div><div class="lbl">등기임원(이사회, 2023.06 기준)</div></div>
+      <div class="stat"><div class="num">단독대표</div><div class="lbl">2024년~ 최성안 부회장 체제</div></div>
+      <div class="stat"><div class="num" id="statNew-sh">-</div><div class="lbl">최근 승진·변동 확인</div></div>
+    </div>
+  </section>
+<section class="panel" id="sh-financials">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> 최근 3개년 재무 성과</h2>
+    <div class="desc">연결재무제표 기준 매출액·영업이익 추이입니다. 2023년 8년 만에 연간 흑자 전환에 성공했습니다.</div>
+    <div class="fin-table-wrap">
+      <table class="fin-table">
+        <thead><tr><th>회계연도</th><th>매출액</th><th>영업이익</th><th>영업이익률</th></tr></thead>
+        <tbody>
+          <tr><td>2023<span class="fin-est-mark">*</span></td><td class="fin-est">약 8조 140억원</td><td>2,333억원 (8년만에 흑자전환)</td><td>2.9%</td></tr>
+          <tr><td>2024</td><td>9조 9,031억원</td><td>5,027억원</td><td>5.1%</td></tr>
+          <tr class="fin-latest"><td>2025<span class="badge new">최근</span></td><td>10조 6,500억원</td><td>8,622억원</td><td>8.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fin-note">2025년 영업이익 전년비 +71.5% — 해양(FLNG 등) 프로젝트 매출 확대로 손익구조 개선. *2023년 매출은 2024년 실적발표에 명시된 전년 대비 증감률(+23.6%)로 역산한 추정치입니다. <sup class="fnref">[<a href="#fn-sh-7">7</a>, <a href="#fn-sh-8">8</a>]</sup></div>
+  </section>
+<section class="panel" id="sh-changes">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12,2 14.9,9 22,9.5 16.5,14.3 18.2,21.5 12,17.5 5.8,21.5 7.5,14.3 2,9.5 9.1,9"/></svg> 최근 확인된 주요 변동사항</h2>
+    <div class="desc">웹 공개 보도자료를 근거로 확인한 사항만 기재했습니다. 표기가 없는 인물은 2023.06 DART 스냅샷을 그대로 유지한 것으로, 이미 3년 이상 지난 정보이므로 재직 여부를 반드시 재확인해야 합니다.</div>
+    <ul class="change-list">
+      <li><span class="tag">2024~</span> 정진택 前 대표이사 사장, 2023년 말 임기 종료 후 상담역으로 퇴임 — 최성안 부회장 <b>단독대표 체제</b>로 전환 <sup class="fnref">[<a href="#fn-sh-4">4</a>]</sup></li>
+      <li><span class="tag">2025.11</span> 부사장 승진 4명: 김현조(前 자율운항연구센터장) · 윤재균(前 영업2팀장) · 이동현(前 운반선PM팀장) · 이성락(前 인사팀장) <sup class="fnref">[<a href="#fn-sh-1">1</a>, <a href="#fn-sh-2">2</a>]</sup></li>
+      <li><span class="tag">2025.11</span> 신규 상무 승진 7명: 권혁수·김동주·김현호·류광현·박정서·박철희·황원준 (보직 비공개), Master 1명: 박중구 <sup class="fnref">[<a href="#fn-sh-2">2</a>]</sup></li>
+      <li><span class="tag">2024.12</span> 임종진(前 구매담당 상무) 부사장 승진. 신규 상무 3명: 민준호·박용구·허희영, Master 1명: 방창선 <sup class="fnref">[<a href="#fn-sh-3">3</a>]</sup></li>
+      <li><span class="tag">확인필요</span> 사외이사 3명(남기섭·이기권·최강식)은 2023.06 기준 임기가 이미 2024~2025년 만료된 것으로 표기돼 있어, 후임 여부를 별도로 확인하지 못했습니다. 배진한 부사장(경영지원실장)은 2026년 시점 기사에서도 재직이 간접 확인됩니다.</li>
+    </ul>
+  </section>
+<section class="panel" id="sh-org">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><line x1="12" y1="6" x2="12" y2="11"/><line x1="12" y1="11" x2="5" y2="16"/><line x1="12" y1="11" x2="19" y2="16"/></svg> 조직도 (사업부문 기준 추정)</h2>
+    <div class="desc">공개 정보로 추정한 구조입니다. 2023.06 기준 보직명을 바탕으로 하며, 실제 2026년 조직 개편 여부는 미확인입니다. 좌우로 스크롤하여 전체를 확인하세요.</div>
+    <div class="orgchart-scroll">
+      <div class="orgchart">
+        <div class="org-node ceo">대표이사 최성안 부회장<small>단독대표 · 2024년~</small></div>
+        <div class="org-connector"></div>
+        <div class="org-row">
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">조선해양영업</div><div class="person">오성일 부사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">영업기획팀 · 전제진 상무</div>
+              <div class="leaf">영업2팀 · 윤재균 부사장</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">해양사업</div><div class="person">강영규 부사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">해양설계담당 · 여동일 상무</div>
+              <div class="leaf">해양EM팀 · 윤균중 상무</div>
+              <div class="leaf">해양구매팀 · 김경철 상무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">생산 부문</div><div class="person">김경희 부사장 / 허정윤 부사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">생산지원본부 · 김경희 부사장</div>
+              <div class="leaf">생산지원담당 · 이왕근 · 남궁금성 부사장</div>
+              <div class="leaf">조선소장 겸 CSO · 윤종현 부사장</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">기술개발/연구</div><div class="person">장해기 부사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">조선해양연구소 · 이동연 부사장</div>
+              <div class="leaf">자율운항연구센터 · 김현조 부사장</div>
+              <div class="leaf">조선설계담당 · 안영규 부사장</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">경영지원실</div><div class="person">배진한 부사장</div></div>
+            <div class="org-sub">
+              <div class="leaf">재무팀 · 유광복 부사장</div>
+              <div class="leaf">인사지원담당 · 신현호 부사장</div>
+              <div class="leaf">인사팀 · 이성락 부사장</div>
+              <div class="leaf">법무팀 · 정인호 상무</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="scroll-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 12l4-4M5 12l4 4M19 12l-4-4M19 12l-4 4"/></svg> 좌우로 드래그하거나 스크롤하여 전체 조직도를 확인하세요</div>
+  </section>
+<section class="panel" id="sh-profiles">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14c2.5.3 4.5 2.5 4.5 6"/></svg> 임원 프로필</h2>
+    <div class="desc">사진은 등기임원·대표이사급만 실사진 검색 링크를 크게 제공하고, 그 외 인물은 구글·네이버 인물 검색 링크를 제공합니다. 실제 이미지 파일은 저작권·핫링크 안정성 문제로 직접 삽입하지 않았습니다. 카드 좌측 색상은 이니셜이 아니라 <b>직급 구분</b>을 나타냅니다.</div>
+    <div class="rank-legend">
+      <span class="rank-chip rb"><i></i>등기임원(이사회)</span>
+      <span class="rank-chip rt"><i></i>사장단·대표·부사장</span>
+      <span class="rank-chip rm"><i></i>전무</span>
+      <span class="rank-chip rd"><i></i>상무·상무보</span>
+    </div>
+    <div class="filterbar">
+      <button class="active" data-f="all">전체</button>
+      <button class="" data-f="board">등기임원(2023.06)</button>
+      <button class="" data-f="vp">부사장</button>
+      <button class="" data-f="dir">상무/Master</button>
+      <button class="" data-f="new">최근 승진(2024~2025)</button>
+      <div class="searchbox"><input type="text" id="searchInput-sh" placeholder="이름 또는 담당업무 검색"></div>
+    </div>
+    <div class="grid" id="cardGrid-sh"></div>
+    <div class="hint">총 <span id="resultCount-sh">0</span>명 표시 중</div>
+  </section>
+
+<section class="panel footnotes-panel" id="sh-sources">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg> 출처 · 각주</h2>
+    <div class="desc">삼성중공업 카드·변동사항에 인용된 출처입니다. 번호를 클릭하면 원문 기사로 이동합니다.</div>
+    <ol class="fn-list">
+      <li id="fn-sh-1"><span class="fn-num">1</span> <a href="https://www.news1.kr/industry/general-industry/5990024" target="_blank" rel="noopener">삼성중공업, 2026년 임원 인사…부사장 4명 등 승진</a> <span class="fn-source">— 뉴스1</span></li>
+<li id="fn-sh-2"><span class="fn-num">2</span> <a href="https://zdnet.co.kr/view/?no=20251127100959" target="_blank" rel="noopener">삼성중공업 2026년 정기 임원 인사 명단</a> <span class="fn-source">— ZDNet Korea</span></li>
+<li id="fn-sh-3"><span class="fn-num">3</span> <a href="https://www.smedaily.co.kr/news/articleView.html?idxno=311458" target="_blank" rel="noopener">[인사]삼성중공업 2025년 정기 임원인사</a> <span class="fn-source">— 중소기업신문</span></li>
+<li id="fn-sh-4"><span class="fn-num">4</span> <a href="https://www.c-journal.co.kr/articleView?num=352" target="_blank" rel="noopener">삼성중공업 8년 연속 적자와 CEO 무덤, 박대영 남준우 정진택 정상화 위해 스러지다</a> <span class="fn-source">— C-Journal</span></li>
+<li id="fn-sh-5"><span class="fn-num">5</span> <a href="https://namu.wiki/w/%EC%82%BC%EC%84%B1%EC%A4%91%EA%B3%B5%EC%97%85" target="_blank" rel="noopener">삼성중공업</a> <span class="fn-source">— 나무위키</span></li>
+<li id="fn-sh-6"><span class="fn-num">6</span> <a href="https://dart.fss.or.kr/" target="_blank" rel="noopener">삼성중공업 2023.06.30 사업보고서 (원본 데이터)</a> <span class="fn-source">— DART 전자공시시스템</span></li>
+<li id="fn-sh-7"><span class="fn-num">7</span> <a href="https://www.digitaltoday.co.kr/news/articleView.html?idxno=625544" target="_blank" rel="noopener">삼성중공업, 2025년 영업이익 8622억원…전년 대비 71.5% 증가</a> <span class="fn-source">— 디지털투데이</span></li>
+<li id="fn-sh-8"><span class="fn-num">8</span> <a href="https://www.huffingtonpost.kr/article/257779" target="_blank" rel="noopener">최성안 삼성중공업의 '전성기 부활' 꿈꾸는 중 — '8년 적자' 고리 끊고 2023년 2,333억원 흑자 전환</a> <span class="fn-source">— 허프포스트코리아</span></li>
+    </ol>
+  </section>
+</section>
+<section class="page" id="page-po" data-title="팬오션(주) 임원 현황 &amp; 조직도" data-subtitle="DART 전자공시(2023.06.30 사업보고서 기준) 데이터를 기반으로, 팬오션 공식 지배구조 페이지(2026.03 기준)와 2025~2026년 정기 임원인사 보도를 반영해 갱신했습니다. 카드를 클릭하면 상세 프로필이 열립니다." data-badge="최종 업데이트 2026-08-24 · 이사회: panocean.com 공식 페이지(2026.03) 직접 확인 · 임원: 2025.01·2026.01 인사 반영 · 최근 3개년 재무 성과 추가, 특수선영업본부장 신재호 상무보 반영" style="display:none">
+<section class="panel" id="po-summary">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> 요약</h2>
+    <div class="stat-grid">
+      <div class="stat"><div class="num" id="statTotal-po">-</div><div class="lbl">전체 등재 임원</div></div>
+      <div class="stat"><div class="num" id="statBoard-po">-</div><div class="lbl">등기임원(이사회)</div></div>
+      <div class="stat"><div class="num">4 / 7</div><div class="lbl">독립(사외)이사 / 전체 이사 (2026.03 기준)</div></div>
+      <div class="stat"><div class="num" id="statNew-po">-</div><div class="lbl">최근 승진·변동 확인</div></div>
+    </div>
+  </section>
+<section class="panel" id="po-financials">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg> 최근 3개년 재무 성과</h2>
+    <div class="desc">연결재무제표 기준 매출액·영업이익 추이입니다.</div>
+    <div class="fin-table-wrap">
+      <table class="fin-table">
+        <thead><tr><th>회계연도</th><th>매출액</th><th>영업이익</th><th>영업이익률</th></tr></thead>
+        <tbody>
+          <tr><td>2023<span class="fin-est-mark">*</span></td><td class="fin-est">약 4조 3,740억원</td><td class="fin-est">약 3,862억원</td><td>8.8%</td></tr>
+          <tr><td>2024</td><td>5조 1,612억원</td><td>4,712억원</td><td>9.1%</td></tr>
+          <tr class="fin-latest"><td>2025<span class="badge new">최근</span></td><td>5조 4,329억원</td><td>4,919억원</td><td>9.1%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="fin-note">2025년은 매출·영업이익 모두 소폭 증가(+5.3%/+4.4%)로 성장세 둔화. *2023년 수치는 2024년 실적발표에 명시된 전년 대비 증감률(매출 +18%, 영업이익 +22%)로 역산한 추정치입니다. <sup class="fnref">[<a href="#fn-po-7">7</a>, <a href="#fn-po-8">8</a>]</sup></div>
+  </section>
+<section class="panel" id="po-changes">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12,2 14.9,9 22,9.5 16.5,14.3 18.2,21.5 12,17.5 5.8,21.5 7.5,14.3 2,9.5 9.1,9"/></svg> 최근 확인된 주요 변동사항</h2>
+    <div class="desc">이사회 명단은 팬오션 공식 홈페이지 지배구조 페이지에서 2026.03 기준으로 직접 확인했습니다. 그 외 인물은 언론 보도로 확인된 사항만 반영했습니다.</div>
+    <ul class="change-list">
+      <li><span class="tag">2026.03 확인</span> 이사회 총 7명(사내이사 3명·독립이사 4명) 체제 유지. 사외이사 <b>오광수 → 박승오</b>(前 하나캐피탈 대표이사, 금융 전문)로 교체 확인 <sup class="fnref">[<a href="#fn-po-1">1</a>]</sup></li>
+      <li><span class="tag">2026.01</span> 정도식 상무(싱가폴법인장) → 전무 승진 <sup class="fnref">[<a href="#fn-po-4">4</a>]</sup></li>
+      <li><span class="tag">2026.01</span> 김영주·성제용 상무보 → 상무 승진. 신규 상무보 3명: 신재호·윤정용·김준영 <sup class="fnref">[<a href="#fn-po-4">4</a>, <a href="#fn-po-5">5</a>]</sup></li>
+      <li><span class="tag">참고</span> 신규 상무보 김준영(투자기획팀 책임)은 김홍국 하림그룹 회장의 장남 — 2026.01.01자 승진 <sup class="fnref">[<a href="#fn-po-5">5</a>]</sup></li>
+      <li><span class="tag">2025.01</span> 정상진·서보남 상무보 → 상무 승진. 조양진(전용선사업실장) 실장 → 상무보 신규 선임 <sup class="fnref">[<a href="#fn-po-3">3</a>]</sup></li>
+    </ul>
+  </section>
+<section class="panel" id="po-org">
+    <h2><svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><line x1="12" y1="6" x2="12" y2="11"/><line x1="12" y1="11" x2="5" y2="16"/><line x1="12" y1="11" x2="19" y2="16"/></svg> 조직도 (사업부문 기준 추정)</h2>
+    <div class="desc">공개 정보로 추정한 구조입니다. 좌우로 스크롤하여 전체를 확인하세요.</div>
+    <div class="orgchart-scroll">
+      <div class="orgchart">
+        <div class="org-node ceo">대표이사 김홍국 회장 · 안중호 사장<small>안중호 = 이사회 의장 (2026.03 기준)</small></div>
+        <div class="org-connector"></div>
+        <div class="org-row">
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">벌크영업</div><div class="person">나병철 전무 / 서보남 상무</div></div>
+            <div class="org-sub">
+              <div class="leaf">벌크영업1본부 · 나병철 전무</div>
+              <div class="leaf">벌크영업2본부 · 서보남 상무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">대형선/특수선영업</div><div class="person">정상진 상무 / 신재호 상무보</div></div>
+            <div class="org-sub">
+              <div class="leaf">대형선영업본부 · 정상진 상무</div>
+              <div class="leaf">특수선영업본부 · 신재호 상무보</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">LNG/전용선</div><div class="person">성제용 상무 / 조양진 상무보</div></div>
+            <div class="org-sub">
+              <div class="leaf">LNG사업실 · 성제용 상무</div>
+              <div class="leaf">전용선사업실 · 조양진 상무보</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">해외법인</div><div class="person">일본·중국·싱가폴</div></div>
+            <div class="org-sub">
+              <div class="leaf">일본법인장 · 나병철 전무 겸직</div>
+              <div class="leaf">중국법인장 · 방상두 상무</div>
+              <div class="leaf">싱가폴법인장 · 정도식 전무</div>
+            </div>
+          </div>
+          <div class="org-branch">
+            <div class="org-unit"><div class="role">경영지원</div><div class="person">천세기 부사장 (윤리경영실장)</div></div>
+            <div class="org-sub">
+              <div class="leaf">경영기획실 · 김영석 상무</div>
+              <div class="leaf">투자기획팀 · 김준영 상무보</div>
+              <div class="leaf">법무보험실 · 김영주 상무</div>
+              <div class="leaf">재무관리실 · 김태형 상무보</div>
+              <div class="leaf">영업지원실 · 윤석홍 상무보</div>
+              <div class="leaf">안전경영실 · 양찬현 상무</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="scroll-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M5 12l4-4M5 12l4 4M19 12l-4-4M19 12l-4 4"/></svg> 좌우로 드래그하거나 스크롤하여 전체 조직도를 확인하세요</div>
+  </section>
+<section class="panel" id="po-profiles">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14c2.5.3 4.5 2.5 4.5 6"/></svg> 임원 프로필</h2>
+    <div class="desc">사진은 등기임원·대표이사급만 실사진 검색 링크를 크게 제공하고, 그 외 인물은 구글·네이버 인물 검색 링크를 제공합니다. 실제 이미지 파일은 저작권·핫링크 안정성 문제로 직접 삽입하지 않았습니다. 카드 좌측 색상은 이니셜이 아니라 <b>직급 구분</b>을 나타냅니다.</div>
+    <div class="rank-legend">
+      <span class="rank-chip rb"><i></i>등기임원(이사회)</span>
+      <span class="rank-chip rt"><i></i>사장단·대표·부사장</span>
+      <span class="rank-chip rm"><i></i>전무</span>
+      <span class="rank-chip rd"><i></i>상무·상무보</span>
+    </div>
+    <div class="filterbar">
+      <button class="active" data-f="all">전체</button>
+      <button class="" data-f="board">등기임원(이사회)</button>
+      <button class="" data-f="exec">본부장/실장급</button>
+      <button class="" data-f="new">최근 승진(2025~2026)</button>
+      <div class="searchbox"><input type="text" id="searchInput-po" placeholder="이름 또는 담당업무 검색"></div>
+    </div>
+    <div class="grid" id="cardGrid-po"></div>
+    <div class="hint">총 <span id="resultCount-po">0</span>명 표시 중</div>
+  </section>
+
+<section class="panel footnotes-panel" id="po-sources">
+    <h2><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg> 출처 · 각주</h2>
+    <div class="desc">팬오션 카드·변동사항에 인용된 출처입니다. 번호를 클릭하면 원문 기사로 이동합니다.</div>
+    <ol class="fn-list">
+      <li id="fn-po-1"><span class="fn-num">1</span> <a href="https://www.panocean.com/kor/Governance01" target="_blank" rel="noopener">팬오션 공식 지배구조(Governance) 페이지 · 2026.03 직접 확인</a> <span class="fn-source">— panocean.com</span></li>
+<li id="fn-po-2"><span class="fn-num">2</span> <a href="https://www.fnnews.com/news/202606300936526557" target="_blank" rel="noopener">안중호 팬오션 대표 "윤리·준법경영 인정받았다"</a> <span class="fn-source">— 파이낸셜뉴스</span></li>
+<li id="fn-po-3"><span class="fn-num">3</span> <a href="https://www.klnews.co.kr/news/articleView.html?idxno=314774" target="_blank" rel="noopener">팬오션, 2025년 정기 인사 내정자 발표</a> <span class="fn-source">— 물류신문</span></li>
+<li id="fn-po-4"><span class="fn-num">4</span> <a href="https://www.shippingnewsnet.com/news/articleView.html?idxno=67731" target="_blank" rel="noopener">팬오션, 임원 승진 인사(2026년 1월 1일자)</a> <span class="fn-source">— Shipping News Net</span></li>
+<li id="fn-po-5"><span class="fn-num">5</span> <a href="https://www.fntimes.com/html/view.php?ud=2025112119035866900d260cda75_18" target="_blank" rel="noopener">김홍국 하림그룹 회장 아들, 팬오션 상무보 승진</a> <span class="fn-source">— 한국금융신문</span></li>
+<li id="fn-po-6"><span class="fn-num">6</span> <a href="https://dart.fss.or.kr/" target="_blank" rel="noopener">팬오션 2023.06.30 사업보고서 (원본 데이터)</a> <span class="fn-source">— DART 전자공시시스템</span></li>
+<li id="fn-po-7"><span class="fn-num">7</span> <a href="https://m.news.nate.com/view/20250211n23283" target="_blank" rel="noopener">팬오션, 지난해 매출 5조1612억 18%↑…영업이익 4712억원 22%↑</a> <span class="fn-source">— 네이트뉴스 · 2025.02</span></li>
+<li id="fn-po-8"><span class="fn-num">8</span> <a href="https://www.panocean.com/kor/NewsView?i=97&p=1" target="_blank" rel="noopener">팬오션, 2025년 4분기 잠정 실적 발표</a> <span class="fn-source">— 팬오션 공식 IR</span></li>
+    </ol>
+  </section>
+</section>
+</main>
+
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-close" id="modalClose" aria-label="닫기">&times;</button>
+    <div class="modal-head">
+      <span class="rank-pill" id="mRankPill">-</span>
+      <h3 id="mName">-</h3>
+      <div class="ttl" id="mTitle">-</div>
+    </div>
+    <div class="photo-links" id="mPhotoLinks"></div>
+    <dl class="kv" id="mKv"></dl>
+    <div class="career-box" id="mCareer"></div>
+    <div id="mUpdateNote"></div>
+  </div>
+</div>
+
+<footer class="pagefoot">문서 작성: Megaline Eng. · 사진: Google/Naver 인물 검색 링크로 대체 · 각 회사 페이지 하단 "출처·각주" 참고</footer>
+
+<script>
+
+const TODAY = new Date(2026, 7, 24);
+
+/* monochrome icon set (JS-side, innerHTML contexts) */
+const ICO = {
+  chart:  '<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="20" x2="4" y2="12"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="20" y1="20" x2="20" y2="14"/></svg>',
+  star:   '<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12,2 14.9,9 22,9.5 16.5,14.3 18.2,21.5 12,17.5 5.8,21.5 7.5,14.3 2,9.5 9.1,9"/></svg>',
+  org:    '<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><line x1="12" y1="6" x2="12" y2="11"/><line x1="12" y1="11" x2="5" y2="16"/><line x1="12" y1="11" x2="19" y2="16"/></svg>',
+  users:  '<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.3"/><path d="M15.5 14c2.5.3 4.5 2.5 4.5 6"/></svg>',
+  book:   '<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H20z"/></svg>',
+  pin:    '<svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>',
+  search: '<svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.3" y1="15.3" x2="21" y2="21"/></svg>',
+  check:  '<svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 10 17 4 11"/></svg>',
+  alert:  '<svg class="ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20L12 3z"/><line x1="12" y1="10" x2="12" y2="14.5"/><circle cx="12" cy="17.3" r="0.6" fill="currentColor" stroke="none"/></svg>',
+};
+
+function calcAge(birth){
+  if(!birth) return "-";
+  const m = birth.match(/^(\d{4})-(\d{1,2})$/);
+  if(!m) return "-";
+  const by = parseInt(m[1],10), bm = parseInt(m[2],10);
+  let age = TODAY.getFullYear() - by;
+  if (TODAY.getMonth()+1 < bm) age -= 1;
+  return age + "세";
+}
+function birthLabel(birth){
+  if(!birth) return "확인 필요";
+  const m = birth.match(/^(\d{4})-(\d{1,2})$/);
+  if(!m) return birth;
+  return `${m[1]}년 ${m[2]}월생 (만 ${calcAge(birth)})`;
+}
+function searchLinks(name, extra){
+  const q = encodeURIComponent(`${name} ${extra}`);
+  return `
+    <a href="https://www.google.com/search?q=${q}&tbm=isch" target="_blank" rel="noopener">${ICO.search} Google 사진 검색</a>
+    <a href="https://search.naver.com/search.naver?where=image&query=${q}" target="_blank" rel="noopener">${ICO.search} Naver 사진 검색</a>
+  `;
+}
+function rankOf(p){
+  if(p.group.includes('board')) return 'board';
+  if(p.group.includes('top') || p.group.includes('vp') || p.group.includes('exec')) return 'top';
+  if(p.group.includes('md')) return 'md';
+  return 'dir';
+}
+function rankLabel(r){
+  return {board:'등기임원', top:'경영진', md:'전무', dir:'상무'}[r];
+}
+
+const PEOPLE_HO = [
+// 등기임원 (이사회)
+{name:"김희철",gender:"남",birth:"1964-10",title:"대표이사",registered:"사내이사",standing:"상근",duty:"대표이사",
+ career:"서울대 화학공학 석·박사\nWashington University in St.Louis MBA\n전) 한화에너지㈜ 대표이사\n전) 한화임팩트㈜ 대표이사\n전) 한화솔루션㈜ 큐셀부문 대표이사\n전) 한화토탈㈜ 대표이사\n전) 한화종합화학㈜ 대표이사",
+ tenure:"2025.07 기준 7개월",term:"2026.03 재선임 (임기 ~2029.03)",group:["board","top"],
+ update:{type:"ok",text:"2026.03 정기주총에서 대표이사·사내이사 재선임 확인 <sup class='fnref'>[<a href='#fn-ho-1'>1</a>, <a href='#fn-ho-2'>2</a>]</sup>"}},
+{name:"김동관",gender:"남",birth:"1983-10",title:"기타비상무이사",registered:"기타비상무이사",standing:"비상근",duty:"경영 전반에 관한 업무",
+ career:"Harvard Univ. 정치학\n현) ㈜한화 대표이사\n현) 한화에어로스페이스㈜ 대표이사\n현) 한화솔루션㈜ 대표이사\n현) 한화임팩트 대표이사",
+ tenure:"2025.07 기준 1년 10개월",term:"2025.07 기준 만료일 2027.03.31",group:["board"],
+ update:{type:"watch",text:"2026.03 이사회 개편(총 8명/사외이사 5명) 이후 사내이사 구성이 바뀌었을 가능성이 있어 2026년 재직 여부 재확인 필요"}},
+{name:"김종서",gender:"남",birth:"1967-08",title:"사장",registered:"사내이사",standing:"상근",duty:"상선사업부장",
+ career:"서강대학교 화학공학\n전) 한화에어로스페이스㈜ 담당임원\n전) 한화큐셀재팬 대표이사\n전) 한화토탈에너지스㈜ 대표이사",
+ tenure:"2025.07 기준 1년 10개월",term:"2025.07 기준 만료일 2027.03.31",group:["board","top"],
+ update:{type:"ok",text:"2024.06 더벨 기사에서 '해외통' 상선사업부장으로 재직 확인 (2026년 개별 재확인 기사는 없음)<sup class='fnref'>[<a href='#fn-ho-9'>9</a>]</sup>"}},
+{name:"Philippe Levy",gender:"남",birth:"1968-05",title:"사장",registered:"사내이사",standing:"상근",duty:"President of Offshore Business",
+ career:"Conservatoire National des Arts et Métiers Engineering\n전) CNOOC/Exxon 경영컨설턴트\n전) SBM Offshore President, Americas (Houston)\n전) SBM Offshore President, Group BD Director (Monaco)",
+ tenure:"2025.07 기준 1년",term:"2025.07 기준 만료일 2027.03.31",group:["board","top"],
+ update:{type:"ok",text:"LinkedIn 프로필<sup class='fnref'>[<a href='#fn-ho-8'>8</a>]</sup> 기준 2026년 현재도 President, Hanwha Ocean (Offshore) 재직 확인"}},
+{name:"조지 P. 부시",gender:"남",birth:"1976-04",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"사외이사",
+ career:"University of Texas School of Law, Juris Doctor\n현) Michael Best & Friedrich LLP, Partner\n전) St. Augustine Partners, Founder\n전) Land Commissioner of Texas",
+ tenure:"2025.07 기준 1년 10개월",term:"2025.07 기준 만료일 2027.03.31",group:["board"],
+ update:{type:"watch",text:"2026.03 주총 이후 재직 지속 여부 미확인"}},
+{name:"현낙희",gender:"여",birth:"1980-01",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (감사위원회·내부거래위원회·ESG위원회 위원장)",
+ career:"Harvard Law School\n연세대 법학 석사\n현) 성균관대학교 법학전문대학원 부교수\n사법연수원 34기 / 미국 뉴욕주 변호사\n전) 대법원 재판연구관",
+ tenure:"2025.07 기준 1년 10개월",term:"2025.07 기준 만료일 2027.03.31",group:["board"],
+ update:{type:"watch",text:"2026.03 주총 이후 재직 지속 여부 미확인"}},
+{name:"최훈",gender:"남",birth:"1968-12",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (내부거래위원회·사외이사추천위원회)",
+ career:"성균관대 행정학\n영국 버밍엄대 경영전문대학원 국제금융학(MBA)\n중국 대외경제무역대 경제학 박사\n전) 주 싱가포르 대사\n전) 금융위원회 상임위원",
+ tenure:"2025.07 기준 1개월",term:"2025.07 기준 만료일 2027.03.31",group:["board"],
+ update:{type:"watch",text:"2026.03 주총 이후 재직 지속 여부 미확인"}},
+{name:"김봉환",gender:"남",birth:"1969-06",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (감사위원장·내부거래위원회·사외이사추천위원회·ESG위원회)",
+ career:"Washington Univ. in St. Louis 회계학 박사\nUniv. of Michigan 경영학 석사\n현) 서울대학교 행정대학원 교수\n전) 서울특별시 금융도시담당관",
+ tenure:"2025.07 기준 1년 10개월",term:"2025.07 기준 만료일 2027.03.31",group:["board"],
+ update:{type:"watch",text:"2026.03 감사위원 2명 체제 개편(김영삼·이효진 신규) 이후 위원 구성 변동 가능성 — 재직 여부 미확인"}},
+{name:"안완기",gender:"남",birth:"1964-03",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (감사위원회·내부거래위원장·사외이사추천위원회·ESG위원회)",
+ career:"서울대 공법학 / 미국 하버드대 법학 석사\n현) 한국공학대 산업기술정책연구센터 석좌교수\n전) 한국생산성본부 회장\n전) 한국가스공사 부사장/사장대행",
+ tenure:"2025.07 기준 1개월",term:"2025.07 기준 만료일 2027.03.31",group:["board"],
+ update:{type:"watch",text:"2026.03 주총 이후 재직 지속 여부 미확인"}},
+{name:"김영삼",gender:null,birth:null,title:"사외이사",registered:"사외이사(감사위원)",standing:"비상근",duty:"사외이사 겸 감사위원",
+ career:"서울대 경제학 / 미시간대 석사 / 순천향대 박사\n현) KEI컨설팅 대표이사",
+ tenure:"2026.03 신규 선임",term:"임기 3년 (~2029.03)",group:["board","new"],
+ update:{type:"ok",text:"2026.03 정기주총 신규 선임 확인 <sup class='fnref'>[<a href='#fn-ho-3'>3</a>]</sup> — 상법 개정에 따른 감사위원 2인 체제 확대 대상"}},
+{name:"이효진",gender:null,birth:null,title:"사외이사",registered:"사외이사(감사위원)",standing:"비상근",duty:"사외이사 겸 감사위원",
+ career:"서울대 사법학 / 충남대 법학 석사\n현) 성균관대학교 법학전문대학원 부교수",
+ tenure:"2026.03 신규 선임",term:"임기 3년 (~2029.03)",group:["board","new"],
+ update:{type:"ok",text:"2026.03 정기주총 신규 선임 확인 <sup class='fnref'>[<a href='#fn-ho-3'>3</a>]</sup> — 상법 개정에 따른 감사위원 2인 체제 확대 대상"}},
+
+// 사장단(미등기)
+{name:"류두형",gender:"남",birth:"1965-07",title:"사장",registered:"미등기",standing:"상근",duty:"경영기획실장",
+ career:"서울대학교 경영학과\n전) 한화정밀기계(주) 대표이사\n전) 한화큐셀/첨단소재(주) 대표이사\n전) 한화에너지(주) 대표이사",
+ tenure:"2025.07 기준 1년 3개월",term:"-",group:["top"],
+ update:{type:"watch",text:"2024.12 기준 사내이사·구매/경영기획 겸직 → 2025.07 기준 미등기 사장·경영기획실장으로 보직 변경 확인"}},
+{name:"정인섭",gender:"남",birth:"1969-12",title:"사장",registered:"미등기",standing:"상근",duty:"대외협력실장",
+ career:"Boston University MBA\n서울대 경영학\n현) 한화에어로스페이스㈜ 전략3팀장\n전) 한화오션㈜ 거제사업장장",
+ tenure:"2025.07 기준 11개월",term:"-",group:["top"],
+ update:{type:"watch",text:"2024.12 기준 사내이사·거제사업장총괄 → 2025.07 기준 미등기 사장·대외협력실장으로 보직 변경 확인"}},
+{name:"어성철",gender:"남",birth:"1964-05",title:"사장",registered:"미등기",standing:"상근",duty:"특수선사업부장",
+ career:"고려대 경제학\n전) 한화시스템㈜ 대표이사\n전) 한화에어로스페이스㈜ 엔진사업본부장\n전) 한화시스템㈜ 경영지원본부장",
+ tenure:"2025.07 기준 7개월",term:"-",group:["top"],
+ update:{type:"watch",text:"2024.12 기준 이용욱 부사장이 담당하던 특수선사업부장을 2025.07 기준 어성철 사장이 승계"}},
+
+// 부사장
+{name:"손영창",gender:"남",birth:"1967-02",title:"부사장",registered:"미등기",standing:"상근",duty:"제품전략기술원장",
+ career:"Poitiers 제어계측공학 석사\n인하대 항공공학\n전) 한화파워시스템㈜ 대표이사\n전) 한화임팩트㈜ 수소사업부장",tenure:"2025.07 기준 7개월",term:"-",group:["vp"]},
+{name:"신용인",gender:"남",birth:"1966-08",title:"부사장",registered:"미등기",standing:"상근",duty:"(전) 재무실장",
+ career:"서울대 국제경제학\n전) 한화솔루션㈜ 전략부문 재무실장\n전) ㈜한화 경영기획실",tenure:"2025.07 기준 1년 7개월",term:"-",group:["vp"],
+ update:{type:"watch",text:"2025.11 CFO(재무실장)에서 장연성 전무로 교체됨 <sup class='fnref'>[<a href='#fn-ho-4'>4</a>, <a href='#fn-ho-5'>5</a>]</sup> — 현재 보직 미확인"}},
+{name:"유동완",gender:"남",birth:"1971-01",title:"부사장",registered:"미등기",standing:"상근",duty:"Offshore Business Global Project Office Head of GPO",
+ career:"고려대 무역학\nStanford Univ. MBA\n전) 한화시스템㈜ Air Space사업부문장\n전) 한화에어로스페이스㈜ 우주사업본부장",tenure:"2025.07 기준 9개월",term:"-",group:["vp"]},
+{name:"이길섭",gender:"남",birth:"1968-10",title:"부사장",registered:"미등기",standing:"상근",duty:"제조총괄",
+ career:"부산대 화학공학\n전) 한화오션㈜ 경영기획실장\n전) 한화케미칼㈜ 미래전략기획부문장",tenure:"2025.07 기준 1년 10개월",term:"-",group:["vp"]},
+{name:"정승균",gender:"남",birth:"1968-02",title:"부사장",registered:"미등기",standing:"상근",duty:"특수선해외사업단장",
+ career:"National Defense University 국가안보/전략 석사\nUniversity of Florida 원자력공학\n전) 해군교육사령관(중장)",tenure:"2025.07 기준 1년 7개월",term:"-",group:["vp"]},
+
+// 전무
+{name:"장연성",gender:"남",birth:"1975-08",title:"전무",registered:"미등기",standing:"상근",duty:"재무실장 (CFO)",
+ career:"서강대(원) 경제학 석사\n전) ㈜한화 지원부문 재무\n전) 한화건설㈜ 금융기획팀장\n한화오션 USA인터내셔널 대표 겸임",
+ tenure:"2025.11 상무→전무 승진",term:"-",group:["md","new"],
+ update:{type:"ok",text:"2025.11 정기 임원인사에서 전무 승진과 함께 재무실장(CFO) 선임 확인 <sup class='fnref'>[<a href='#fn-ho-4'>4</a>, <a href='#fn-ho-5'>5</a>]</sup>"}},
+{name:"권용주",gender:"남",birth:"1974-02",title:"전무",registered:"미등기",standing:"상근",duty:"산동법인장",
+ career:"성균관대 중어중문학\n전) 한화솔루션㈜ 큐셀부분 사업지원실장",tenure:"2025.07 기준 1년",term:"-",group:["md"]},
+{name:"김대영",gender:"남",birth:"1973-11",title:"전무",registered:"미등기",standing:"상근",duty:"정책협력담당",
+ career:"美 Berkeley Law School\n전) 한화에어로스페이스(주) 글로벌지원실장\n전) 공정위 OECD 경쟁정책본부 부본부장",tenure:"2025.07 기준 4개월",term:"-",group:["md"]},
+{name:"김도완",gender:"남",birth:"1970-03",title:"전무",registered:"미등기",standing:"상근",duty:"회계담당",
+ career:"충남대 회계학\n전) ㈜한화 전략부문 회계담당\n전) ㈜한화건설 금융담당",tenure:"2025.07 기준 1년 10개월",term:"-",group:["md"]},
+{name:"김창용",gender:"남",birth:"1970-05",title:"전무",registered:"미등기",standing:"상근",duty:"상선생산본부장",
+ career:"부산대 조선해양공학\n전) 한화오션㈜ 생산관리담당\n전) 한화오션㈜ 생산계획/조립5 부서장",tenure:"2025.07 기준 4년 3개월",term:"-",group:["md"]},
+{name:"문승한",gender:"남",birth:"1969-02",title:"전무",registered:"미등기",standing:"상근",duty:"상선기술본부장",
+ career:"서울대 조선해양공학 석사\n전) 한화오션㈜ 종합/구조설계담당",tenure:"2025.07 기준 5년 7개월",term:"-",group:["md"]},
+{name:"신호우",gender:"남",birth:"1969-10",title:"전무",registered:"미등기",standing:"상근",duty:"상선구매본부장",
+ career:"서울대학교 화학공학 석·박사\n전) 한화솔루션㈜ 케미칼부문 경영기획실장",tenure:"2025.07 기준 8개월",term:"-",group:["md"]},
+{name:"임원배",gender:"남",birth:"1967-02",title:"전무",registered:"미등기",standing:"상근",duty:"상생협력담당",
+ career:"충남대 화학공학\n전) 한화큐셀㈜ 한국공장 지원담당",tenure:"2025.07 기준 1년 6개월",term:"-",group:["md"]},
+{name:"조부근",gender:"남",birth:"1971-04",title:"전무",registered:"미등기",standing:"상근",duty:"노사상생협력본부장",
+ career:"부산대 경제학\n전) 한화에어로스페이스㈜ 임원실\n전) ㈜한화 방산부문 경영지원실장",tenure:"2025.07 기준 1년 10개월",term:"-",group:["md"]},
+{name:"채명진",gender:"남",birth:"1966-03",title:"전무",registered:"미등기",standing:"상근",duty:"HSE운영담당",
+ career:"인하대 조선공학",tenure:"2025.07 기준 3개월",term:"-",group:["md"]},
+{name:"한상윤",gender:"남",birth:"1974-07",title:"전무",registered:"미등기",standing:"상근",duty:"IR팀장",
+ career:"연세대 중어중문학\n현) 한화솔루션·한화에어로스페이스·한화시스템·㈜한화 IR팀장 겸직",tenure:"2025.07 기준 1년 6개월",term:"-",group:["md"]},
+
+// 상무
+{name:"강상돈",gender:"남",birth:"1973-09",title:"상무",registered:"미등기",standing:"상근",duty:"상선영업담당",career:"서울대 조선해양공학\n전) 한화오션㈜ 기본설계담당",tenure:"1년 5개월",group:["dir"]},
+{name:"강성휘",gender:"남",birth:"1968-09",title:"상무",registered:"미등기",standing:"상근",duty:"생산2담당",career:"울산대 기계공학\n전) 한화오션(주) 생산지원담당",tenure:"9개월",group:["dir"]},
+{name:"구홍진",gender:"남",birth:"1972-01",title:"상무",registered:"미등기",standing:"상근",duty:"Head of Engineering",career:"인하대 선박해양공학\n전) 한화오션㈜ 에너지플랜트영업설계1부서장",tenure:"1년 5개월",group:["dir"]},
+{name:"권영삼",gender:"남",birth:"1973-05",title:"상무",registered:"미등기",standing:"상근",duty:"커뮤니케이션담당",career:"연세대 신문방송학\n전) 한화커뮤니케이션위원회",tenure:"1년 10개월",group:["dir"]},
+{name:"김건호",gender:"남",birth:"1977-05",title:"상무",registered:"미등기",standing:"상근",duty:"방산기술연구센터장 겸 함정체계연구팀장",career:"한국항공대 항공우주공학\nPennsylvania State Univ. 에너지공학 석·박사",tenure:"6개월",group:["dir"]},
+{name:"김경환",gender:"남",birth:"1977-01",title:"상무",registered:"미등기",standing:"상근",duty:"Offshore 인사담당",career:"서울대 조선해양공학\n전) 한화에어로스페이스(주) 인사전략실",tenure:"8개월",group:["dir"]},
+{name:"김규백",gender:"남",birth:"1970-02",title:"상무",registered:"미등기",standing:"상근",duty:"특수선사업관리담당",career:"금오공과대 전자공학시스템 석사\n전) 한화시스템㈜ C4I사업부장",tenure:"1년 10개월",group:["dir"]},
+{name:"김대식",gender:"남",birth:"1970-05",title:"상무",registered:"미등기",standing:"상근",duty:"특수선MRO사업 TFT장",career:"인하대 선박해양공학\n전) 한화오션㈜ 특수선기획부서장",tenure:"1년 5개월",group:["dir"]},
+{name:"김문규",gender:"남",birth:"1974-11",title:"상무",registered:"미등기",standing:"상근",duty:"공정개발팀장",career:"영남대 기계공학\n전) SK에코엔지니어링 플랜트공정설계",tenure:"1개월",group:["dir"]},
+{name:"김신형",gender:"남",birth:"1971-01",title:"상무",registered:"미등기",standing:"상근",duty:"방산기술연구센터",career:"서울대 조선해양공학 석·박사\n전) 한화오션㈜ 방산기술연구센터장",tenure:"1년 5개월",group:["dir"]},
+{name:"김일홍",gender:"남",birth:"1975-11",title:"상무",registered:"미등기",standing:"상근",duty:"특수선설계담당",career:"한국과학기술원 이그제큐티브 MBA 석사\n전) 한화오션㈜ 플랫폼설계1팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"김혁",gender:"남",birth:"1977-12",title:"상무",registered:"미등기",standing:"상근",duty:"Head of Project",career:"IE Business School MBA\n서울대 조선해양공학",tenure:"1년 10개월",group:["dir"]},
+{name:"김현식",gender:"남",birth:"1975-05",title:"상무",registered:"미등기",standing:"상근",duty:"상선영업담당",career:"고려대 경영학\n전) PWC, EY Consulting",tenure:"1년 10개월",group:["dir"]},
+{name:"김호중",gender:"남",birth:"1969-08",title:"상무",registered:"미등기",standing:"상근",duty:"특수선영업담당",career:"창원대 전기제어공학 석사\n현) 한화에어로스페이스㈜ 전략1팀",tenure:"1년",group:["dir"]},
+{name:"노왕현",gender:"남",birth:"1967-02",title:"상무",registered:"미등기",standing:"상근",duty:"해양생산담당",career:"부경대 선박공학\n전) 한화오션㈜ 해양탑재부서장",tenure:"4년 3개월",group:["dir"]},
+{name:"류재혁",gender:"남",birth:"1974-11",title:"상무",registered:"미등기",standing:"상근",duty:"생산3담당",career:"동아대 전자공학\n전) 한화오션(주) 생산운영부서장",tenure:"6개월",group:["dir"]},
+{name:"박종일",gender:"남",birth:"1967-03",title:"상무",registered:"미등기",standing:"상근",duty:"생산1담당",career:"원광대 무역학\n전) 한화오션㈜ 선박생산2담당",tenure:"6년 3개월",group:["dir"]},
+{name:"백종현",gender:"남",birth:"1967-12",title:"상무",registered:"미등기",standing:"상근",duty:"IT솔루션담당",career:"서강대 전자계산학\n연세대 컴퓨터과학 석·박사\n전) 한화오션디지털(주) 대표이사",tenure:"4개월",group:["dir"]},
+{name:"서승권",gender:"남",birth:"1968-11",title:"상무",registered:"미등기",standing:"상근",duty:"CSHO",career:"부산대 화학\n전) 한화오션㈜ HSE정책담당",tenure:"1년 8개월",group:["dir"]},
+{name:"서신원",gender:"남",birth:"1970-04",title:"상무",registered:"미등기",standing:"상근",duty:"구매1담당",career:"인하대 금속공학\n전) 한화오션㈜ 구매2담당",tenure:"1년 10개월",group:["dir"]},
+{name:"서행명",gender:"남",birth:"1970-10",title:"상무",registered:"미등기",standing:"상근",duty:"의장설계담당",career:"동아대 전기공학\n전) 한화오션(주) 선박전장설계1팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"석종선",gender:"남",birth:"1968-01",title:"상무",registered:"미등기",standing:"상근",duty:"Head of WTIV",career:"홍익대 화학공학\n전) (주)한화건설 플랜트사업담당 겸 통영TF팀장",tenure:"1년 10개월",group:["dir"]},
+{name:"손종현",gender:"남",birth:"1975-07",title:"상무",registered:"미등기",standing:"상근",duty:"E&I 사업부장",career:"서울대 경영학\n전) (주)한화 전략기획실 전략2팀장",tenure:"4개월",group:["dir"]},
+{name:"손찬희",gender:"남",birth:"1973-07",title:"상무",registered:"미등기",standing:"상근",duty:"신안우이PD",career:"Univ. of Wisconsin-Madison 기계공학 박사\n전) 한화솔루션㈜ Head of Offshore Wind TF",tenure:"1개월",group:["dir"]},
+{name:"어선필",gender:"남",birth:"1977-02",title:"상무",registered:"미등기",standing:"상근",duty:"품질경영담당",career:"Univ. of North Carolina MBA 석사\n전) 한화에어로스페이스㈜ 엔진부품사업부장",tenure:"1년",group:["dir"]},
+{name:"오세영",gender:"남",birth:"1970-05",title:"상무",registered:"미등기",standing:"상근",duty:"내업담당",career:"거제대 전자공학\n전) 한화오션(주) 조립1팀장/조립4팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"오현길",gender:"남",birth:"1979-03",title:"상무",registered:"미등기",standing:"상근",duty:"법무담당",career:"서울대 법학\n전) 한화에너지(주) 전략팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"오호진",gender:"남",birth:"1975-07",title:"상무",registered:"미등기",standing:"상근",duty:"TOP TFT장",career:"The University of Tokyo 재료공학 박사\n서울대 공업화학 석사\n전) 한화오션㈜ 경영혁신담당",tenure:"1년 9개월",group:["dir"]},
+{name:"이동권",gender:"남",birth:"1968-07",title:"상무",registered:"미등기",standing:"상근",duty:"종합/구조설계담당",career:"서울대 조선공학\n전) 한화오션(주) 선박구조기본설계팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"이명헌",gender:"남",birth:"1977-07",title:"상무",registered:"미등기",standing:"상근",duty:"지원담당",career:"서강대 경영학\n전) 한화에어로스페이스㈜ 인사전략실",tenure:"3개월",group:["dir"]},
+{name:"이상현",gender:"남",birth:"1977-01",title:"상무",registered:"미등기",standing:"상근",duty:"HR실장",career:"포항공대 산업공학 석사\n전) 한화시스템㈜ 인사지원실장",tenure:"1년",group:["dir"]},
+{name:"이영범",gender:"남",birth:"1970-04",title:"상무",registered:"미등기",standing:"상근",duty:"기본성능연구센터장",career:"University of Southampton 유체역학 박사\n서울대 조선공학 석사",tenure:"4년 3개월",group:["dir"]},
+{name:"이정선",gender:"남",birth:"1971-03",title:"상무",registered:"미등기",standing:"상근",duty:"기본설계담당",career:"인하대 선박해양공학\n전) 한화오션(주) 기장기본설계팀",tenure:"6개월",group:["dir"]},
+{name:"이진수",gender:"남",birth:"1971-08",title:"상무",registered:"미등기",standing:"상근",duty:"상선기획담당",career:"성균관대 화학공학\n전) 한화토탈㈜ 기획담당",tenure:"1년 10개월",group:["dir"]},
+{name:"이철우",gender:"남",birth:"1970-05",title:"상무",registered:"미등기",standing:"상근",duty:"생산지원담당",career:"조선대 기계설계학\n전) 한화오션(주) 공무담당",tenure:"6개월",group:["dir"]},
+{name:"정만교",gender:"남",birth:"1969-06",title:"상무",registered:"미등기",standing:"상근",duty:"경영진단담당",career:"연세대 행정학\n전) 한화케미칼㈜ 울산지원담당",tenure:"1년 10개월",group:["dir"]},
+{name:"조성원",gender:"남",birth:"1973-03",title:"상무",registered:"미등기",standing:"상근",duty:"생산공정혁신담당",career:"서울대 조선해양공학 석·박사\n전) 한화오션㈜ 산동주재원 생산계획팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"조용석",gender:"남",birth:"1969-06",title:"상무",registered:"미등기",standing:"상근",duty:"Marketing & Sales장",career:"인하대 조선공학\n전) 한화오션㈜ Offshore, Head of BD/BA",tenure:"3개월",group:["dir"]},
+{name:"조종우",gender:"남",birth:"1980-01",title:"상무",registered:"미등기",standing:"상근",duty:"생산관리담당",career:"서울대 조선해양공학\n전) 한화오션㈜ 생산계획팀장",tenure:"1년 5개월",group:["dir"]},
+{name:"주영석",gender:"남",birth:"1971-03",title:"상무",registered:"미등기",standing:"상근",duty:"특수선생산담당",career:"부산대 기계공학\n전) 한화오션(주) 해양의장1기계파트장",tenure:"6개월",group:["dir"]},
+{name:"채경민",gender:"남",birth:"1975-09",title:"상무",registered:"미등기",standing:"상근",duty:"특수선구매팀장",career:"서강대 화학공학\n전) 한화에어로스페이스㈜ 레이저사업센터장",tenure:"1년 6개월",group:["dir"]},
+{name:"최병호",gender:"남",birth:"1975-02",title:"상무",registered:"미등기",standing:"상근",duty:"전략기획담당",career:"서울대 조선해양공학 석사\n전) 한화에어로스페이스㈜ 전략3팀",tenure:"1년 5개월",group:["dir"]},
+{name:"허윤",gender:"남",birth:"1972-02",title:"상무",registered:"미등기",standing:"상근",duty:"상선사업관리담당",career:"성균관대 MBA\n서울대 조선해양공학",tenure:"7개월",group:["dir"]},
+{name:"현지훈",gender:"남",birth:"1975-11",title:"상무",registered:"미등기",standing:"상근",duty:"구매2담당",career:"고려대 건축공학\n전) 한화오션(주) 물류구매팀장",tenure:"8개월",group:["dir"]},
+{name:"황윤식",gender:"남",birth:"1971-03",title:"상무",registered:"미등기",standing:"상근",duty:"에너지솔루션연구센터장",career:"서울대 조선공학 석사\n전) 한화오션㈜ 친환경에너지연구센터장",tenure:"6개월",group:["dir"]},
+
+// 2025.11 신규 승진 상무 (보직 미확인)
+...["강병철","권기범","김기환","김범성","김병국","김창수","박재성","박정식","배성우","윤찬웅","이용안","황인열"].map(n=>({
+ name:n,gender:null,birth:null,title:"상무",registered:"미등기",standing:"상근",duty:"보직 미공개 (연구·설계·생산 또는 사업관리·지원)",
+ career:"2025.11 정기 임원인사 신규 상무 승진자. 개별 보직·경력은 보도자료에 공개되지 않음.",
+ tenure:"2025.11 상무 승진",term:"-",group:["dir","new"],
+ update:{type:"ok",text:"2025.11 정기 임원인사 승진 명단에서 확인 <sup class='fnref'>[<a href='#fn-ho-6'>6</a>, <a href='#fn-ho-7'>7</a>]</sup> — 세부 보직 비공개"}
+}))
+];
+
+const PEOPLE_SH = [
+// 등기임원 (2023.06 기준)
+{name:"최성안",gender:"남",birth:"1960-12",title:"부회장",registered:"사내이사",standing:"상근",duty:"대표이사",
+ career:"서울대 기계공학\n전) 삼성엔지니어링 대표이사\n2022.12 삼성중공업 대표이사(Co-CEO) 부회장 내정",
+ tenure:"2023.06 기준 7개월",term:"2023.06 기준 만료일 2026.03.17",group:["board"],
+ update:{type:"ok",text:"2024년부터 단독대표 체제로 전환, 2026년 현재도 대표이사 부회장 재직 확인 <sup class='fnref'>[<a href='#fn-sh-5'>5</a>, <a href='#fn-sh-4'>4</a>]</sup>"}},
+{name:"정진택",gender:"남",birth:"1961-08",title:"사장(前)",registered:"사내이사(前)",standing:"-",duty:"前 대표이사 (기술개발본부장·조선소장 역임)",
+ career:"일리노이대 경영 석사\n전) 기술개발본부장\n전) 조선소장",
+ tenure:"2023.06 기준 12년 6개월",term:"2023.06 기준 만료일 2024.03.17",group:["board"],
+ update:{type:"watch",text:"2023년 말 임기 종료 후 상담역으로 퇴임 확인 <sup class='fnref'>[<a href='#fn-sh-4'>4</a>]</sup>. 현재 경영진 아님 — 참고용으로만 표기"}},
+{name:"배진한",gender:"남",birth:"1963-12",title:"부사장",registered:"사내이사",standing:"상근",duty:"경영지원실장",
+ career:"고려대 통계학\n전) 경영지원팀장",
+ tenure:"2023.06 기준 5년 7개월",term:"2023.06 기준 만료일 2025.03.17",group:["board","vp"],
+ update:{type:"ok",text:"경영지원실장·부사장으로 2026년 현재도 재직 중인 것으로 확인됨 <sup class='fnref'>[<a href='#fn-sh-5'>5</a>]</sup>. 등기임원 재선임 여부는 별도 확인 필요"}},
+{name:"남기섭",gender:"남",birth:"1954-12",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"감사위원",
+ career:"밴더빌트대 경제학 석사\n한국수출입은행 수석부행장",
+ tenure:"2023.06 기준 4년 4개월",term:"2023.06 기준 만료일 2025.03.17",group:["board"],
+ update:{type:"watch",text:"표기된 임기가 2025.03 만료 — 재선임/후임 여부 미확인"}},
+{name:"이기권",gender:"남",birth:"1957-09",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"감사위원",
+ career:"중앙대 정책학 박사\n김앤장 법률사무소 고문",
+ tenure:"2023.06 기준 2년 4개월",term:"2023.06 기준 만료일 2024.03.17",group:["board"],
+ update:{type:"watch",text:"표기된 임기가 2024.03 만료 — 재선임/후임 여부 미확인"}},
+{name:"최강식",gender:"남",birth:"1960-08",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"감사위원",
+ career:"Yale 경제학 박사\n연세대 경제학부 교수",
+ tenure:"2023.06 기준 5년 4개월",term:"2023.06 기준 만료일 2024.03.17",group:["board"],
+ update:{type:"watch",text:"표기된 임기가 2024.03 만료 — 재선임/후임 여부 미확인"}},
+{name:"조현욱",gender:"여",birth:"1966-11",title:"사외이사",registered:"사외이사",standing:"비상근",duty:"사외이사",
+ career:"듀크대 법학 석사\n더조은 종합법률사무소 대표변호사\n국가인권위원회 비상임위원",
+ tenure:"2023.06 기준 3년 4개월",term:"2023.06 기준 만료일 2026.03.17",group:["board"],
+ update:{type:"watch",text:"표기된 임기가 2026.03 만료 — 재선임/후임 여부 미확인"}},
+
+// 부사장
+{name:"안평근",gender:"남",birth:"1962-05",title:"부사장",registered:"미등기",standing:"상근",duty:"하이테크사업담당",career:"부산대 조선해양공학 석사\n생산담당 역임",tenure:"2023.06 기준 10년 7개월",group:["vp"]},
+{name:"오성일",gender:"남",birth:"1964-03",title:"부사장",registered:"미등기",standing:"상근",duty:"조선해양영업본부장",career:"부산대 조선공학\n영업본부장 역임",tenure:"2023.06 기준 8년 7개월",group:["vp"]},
+{name:"강영규",gender:"남",birth:"1966-01",title:"부사장",registered:"미등기",standing:"상근",duty:"해양사업본부장",career:"부산대 기계공학 석사\n기술개발본부장 역임",tenure:"2023.06 기준 8년 7개월",group:["vp"]},
+{name:"신현호",gender:"남",birth:"1964-10",title:"부사장",registered:"미등기",standing:"상근",duty:"인사지원담당",career:"연세대 정치외교학",tenure:"2023.06 기준 1년 7개월",group:["vp"]},
+{name:"유광복",gender:"남",birth:"1965-02",title:"부사장",registered:"미등기",standing:"상근",duty:"재무팀장",career:"한양대 법학\n경영기획팀장 역임",tenure:"2023.06 기준 8년 7개월",group:["vp"]},
+{name:"윤종현",gender:"남",birth:"1966-01",title:"부사장",registered:"미등기",standing:"상근",duty:"조선소장 겸 CSO",career:"부산대 조선해양공학 석사\n조선시추설계담당 역임",tenure:"2023.06 기준 9년 7개월",group:["vp"]},
+{name:"허정윤",gender:"남",birth:"1967-10",title:"부사장",registered:"미등기",standing:"상근",duty:"생산담당",career:"부산수산대 조선공학\nLNG선공사팀장 역임",tenure:"2023.06 기준 6년 1개월",group:["vp"]},
+{name:"장해기",gender:"남",birth:"1968-07",title:"부사장",registered:"미등기",standing:"상근",duty:"기술개발본부장",career:"부산대 경영학 석사\n1994년 입사, 기본설계2팀·조선설계담당 역임",tenure:"2023.06 기준 7년 7개월",group:["vp"]},
+{name:"안영규",gender:"남",birth:"1969-01",title:"부사장",registered:"미등기",standing:"상근",duty:"조선설계담당",career:"한국해양대 조선공학 학·석사\n큐슈대 해양시스템공학 박사\n2003년 입사, CS그룹장·조선기술영업팀장 역임",tenure:"2023.06 기준 2년 7개월",group:["vp"]},
+{name:"이동연",gender:"남",birth:"1969-11",title:"부사장",registered:"미등기",standing:"상근",duty:"조선해양연구소장",career:"서울대 조선해양공학 학·석·박사\n1997년 입사, 선박해양연구센터장·에너지플랜트연구센터장 역임",tenure:"2023.06 기준 6년 1개월",group:["vp"]},
+{name:"이왕근",gender:"남",birth:"1970-08",title:"부사장",registered:"미등기",standing:"상근",duty:"생산지원담당",career:"서울대 조선해양공학 석사\n1996년 입사, 연구소·해양기본설계팀·해양사업담당 역임",tenure:"2023.06 기준 6년 1개월",group:["vp"]},
+{name:"김경희",gender:"남",birth:"1970-02",title:"부사장",registered:"미등기",standing:"상근",duty:"생산지원본부장",career:"부산대 조선공학\n1994년 입사, 의장설계팀장·해외사업팀장 역임, 2023.11~ 담당임원",tenure:"2023.06 기준 신규",group:["vp"]},
+{name:"남궁금성",gender:"남",birth:"1971-05",title:"부사장",registered:"미등기",standing:"상근",duty:"생산지원담당",career:"한양대 기계공학\n2005년 입사, 가공팀장·의장팀장·안전환경팀장·생산기획팀장 역임",tenure:"2023.06 기준 6년 1개월",group:["vp"]},
+{name:"임종진",gender:"남",birth:"1971-11",title:"부사장",registered:"미등기",standing:"상근",duty:"구매담당 (2023.06 당시 상무)",career:"포항공대 기계공학\n나이지리아법인장 역임",tenure:"2024.12 부사장 승진",group:["vp","new"],
+ update:{type:"ok",text:"2024.12(2025년 정기인사) 상무→부사장 승진 확인 <sup class='fnref'>[<a href='#fn-sh-3'>3</a>]</sup>"}},
+{name:"김현조",gender:"남",birth:"1970-01",title:"부사장",registered:"미등기",standing:"상근",duty:"자율운항연구센터장 (2023.06 당시 상무)",career:"MIT 해양공학 박사\n선박해양연구센터장 역임",tenure:"2025.11 부사장 승진",group:["vp","new"],
+ update:{type:"ok",text:"2025.11(2026년 정기인사) 상무→부사장 승진 확인 <sup class='fnref'>[<a href='#fn-sh-1'>1</a>, <a href='#fn-sh-2'>2</a>]</sup>"}},
+{name:"윤재균",gender:"남",birth:"1971-10",title:"부사장",registered:"미등기",standing:"상근",duty:"영업2팀장 (2023.06 당시 상무)",career:"부산대 해양공학\n영업1팀장 역임",tenure:"2025.11 부사장 승진",group:["vp","new"],
+ update:{type:"ok",text:"2025.11 상무→부사장 승진 확인 <sup class='fnref'>[<a href='#fn-sh-1'>1</a>, <a href='#fn-sh-2'>2</a>]</sup>"}},
+{name:"이동현",gender:"남",birth:"1970-05",title:"부사장",registered:"미등기",standing:"상근",duty:"운반선PM팀장 (2023.06 당시 상무)",career:"부산대 조선공학 박사",tenure:"2025.11 부사장 승진",group:["vp","new"],
+ update:{type:"ok",text:"2025.11 상무→부사장 승진 확인 <sup class='fnref'>[<a href='#fn-sh-1'>1</a>, <a href='#fn-sh-2'>2</a>]</sup>"}},
+{name:"이성락",gender:"남",birth:"1969-03",title:"부사장",registered:"미등기",standing:"상근",duty:"인사팀장 (2023.06 당시 상무)",career:"부산대 경영학 석사\n인사기획팀장 역임",tenure:"2025.11 부사장 승진",group:["vp","new"],
+ update:{type:"ok",text:"2025.11 상무→부사장 승진 확인 <sup class='fnref'>[<a href='#fn-sh-1'>1</a>, <a href='#fn-sh-2'>2</a>]</sup>"}},
+
+// 상무 / Master (2023.06 기준)
+{name:"스티븐혼",gender:"남",birth:"1957-10",title:"상무",registered:"미등기",standing:"상근",duty:"안전경영본부장",career:"California Maritime 기계공학",tenure:"2023.06 기준 9년 7개월",group:["dir"]},
+{name:"김남길",gender:"남",birth:"1963-09",title:"상무",registered:"미등기",standing:"상근",duty:"영성법인장(중국)",career:"부산대 조선해양공학 석사",tenure:"2023.06 기준 9년 7개월",group:["dir"]},
+{name:"김진모",gender:"남",birth:"1965-09",title:"상무",registered:"미등기",standing:"상근",duty:"글로벌신사업팀장",career:"부산대 조선공학\n1990년 입사, 인도설계센터장·판교엔지니어링센터장·기술기획팀장 역임",tenure:"2023.06 기준 4년 7개월",group:["dir"]},
+{name:"윤기원",gender:"남",birth:"1966-11",title:"상무",registered:"미등기",standing:"상근",duty:"정보보호그룹장",career:"한양대 전자계산학 석사",tenure:"2023.06 기준 3년 7개월",group:["dir"]},
+{name:"선인규",gender:"남",birth:"1967-11",title:"상무",registered:"미등기",standing:"상근",duty:"구조설계팀장",career:"부산대 조선공학",tenure:"2023.06 기준 2년 7개월",group:["dir"]},
+{name:"방호열",gender:"남",birth:"1967-11",title:"상무",registered:"미등기",standing:"상근",duty:"지원팀장",career:"경상공고\n인사관리팀장 역임",tenure:"2023.06 기준 4년 7개월",group:["dir"]},
+{name:"이병헌",gender:"남",birth:"1967-11",title:"상무",registered:"미등기",standing:"상근",duty:"평택PJT시공팀장",career:"부산대 경영학 석사\n생산운영팀장 역임",tenure:"2023.06 기준 3년 7개월",group:["dir"]},
+{name:"김승희",gender:"남",birth:"1968-06",title:"상무",registered:"미등기",standing:"상근",duty:"건조팀장",career:"경희대 지리학",tenure:"2023.06 기준 4년 7개월",group:["dir"]},
+{name:"전제진",gender:"남",birth:"1969-05",title:"상무",registered:"미등기",standing:"상근",duty:"영업기획팀장",career:"포항공대 기계공학\n나이지리아법인장 역임",tenure:"2023.06 기준 3년 6개월",group:["dir"]},
+{name:"배현근",gender:"남",birth:"1969-07",title:"상무",registered:"미등기",standing:"상근",duty:"시운전팀장",career:"경북대 생물산업기계공학",tenure:"2023.06 기준 3년 6개월",group:["dir"]},
+{name:"안강춘",gender:"남",birth:"1969-10",title:"상무",registered:"미등기",standing:"상근",duty:"품질경영팀장",career:"한국해양대 기관학\n기전장설계팀장 역임",tenure:"2023.06 기준 3년 6개월",group:["dir"]},
+{name:"여동일",gender:"남",birth:"1970-01",title:"상무",registered:"미등기",standing:"상근",duty:"해양설계담당",career:"인하대 기계공학\n해양EM팀장 역임",tenure:"2023.06 기준 4년 7개월",group:["dir"]},
+{name:"김승혁",gender:"남",birth:"1971-01",title:"상무",registered:"미등기",standing:"상근",duty:"선장설계팀장",career:"부산대 조선공학 석사",tenure:"2023.06 기준 7개월",group:["dir"]},
+{name:"윤균중",gender:"남",birth:"1972-10",title:"상무",registered:"미등기",standing:"상근",duty:"해양EM팀장",career:"서울대 조선해양공학 박사",tenure:"2023.06 기준 7개월",group:["dir"]},
+{name:"서용성",gender:"남",birth:"1972-12",title:"상무",registered:"미등기",standing:"상근",duty:"안전환경팀장",career:"동의대 산업공학 석사",tenure:"2023.06 기준 7개월",group:["dir"]},
+{name:"김경철",gender:"남",birth:"1973-02",title:"상무",registered:"미등기",standing:"상근",duty:"해양구매팀장",career:"인하대 기계공학",tenure:"2023.06 기준 7개월",group:["dir"]},
+{name:"염철성",gender:"남",birth:"1973-05",title:"상무",registered:"미등기",standing:"상근",duty:"경영기획팀장",career:"한양대 경영학\n경영관리그룹장 역임",tenure:"2023.06 기준 1년 7개월",group:["dir"]},
+{name:"정인호",gender:"남",birth:"1976-10",title:"상무",registered:"미등기",standing:"상근",duty:"법무팀장",career:"고려대 법학\nCompliance팀장 역임",tenure:"2023.06 기준 1년 7개월",group:["dir"]},
+{name:"조지욱",gender:"남",birth:null,title:"팀장",registered:"미등기",standing:"상근",duty:"구매팀장",career:"2024년 초 부임",tenure:"-",group:["dir"]},
+
+// 신규 승진 (2024.12 / 2025.11)
+{name:"민준호",gender:"남",birth:null,title:"상무",registered:"미등기",standing:"상근",duty:"보직 미공개",career:"2024.12 정기 임원인사 신규 상무 승진",tenure:"2024.12 상무 승진",group:["dir","new"],update:{type:"ok",text:"2024.12 승진 명단 확인 <sup class='fnref'>[<a href='#fn-sh-3'>3</a>]</sup>"}},
+{name:"박용구",gender:"남",birth:null,title:"상무",registered:"미등기",standing:"상근",duty:"보직 미공개",career:"2024.12 정기 임원인사 신규 상무 승진",tenure:"2024.12 상무 승진",group:["dir","new"],update:{type:"ok",text:"2024.12 승진 명단 확인 <sup class='fnref'>[<a href='#fn-sh-3'>3</a>]</sup>"}},
+{name:"허희영",gender:null,birth:null,title:"상무",registered:"미등기",standing:"상근",duty:"보직 미공개",career:"2024.12 정기 임원인사 신규 상무 승진",tenure:"2024.12 상무 승진",group:["dir","new"],update:{type:"ok",text:"2024.12 승진 명단 확인 <sup class='fnref'>[<a href='#fn-sh-3'>3</a>]</sup>"}},
+{name:"방창선",gender:"남",birth:null,title:"Master(전문임원)",registered:"미등기",standing:"상근",duty:"R&D 전문임원",career:"2024.12 정기 임원인사 신규 Master 선임",tenure:"2024.12 선임",group:["dir","new"],update:{type:"ok",text:"2024.12 승진 명단 확인 <sup class='fnref'>[<a href='#fn-sh-3'>3</a>]</sup>"}},
+...["권혁수","김동주","김현호","류광현","박정서","박철희","황원준"].map(n=>({
+ name:n,gender:null,birth:null,title:"상무",registered:"미등기",standing:"상근",duty:"보직 미공개 (기술 분야 인재 중심 선발)",
+ career:"2025.11 정기 임원인사 신규 상무 승진자. 개별 보직·경력은 보도자료에 공개되지 않음.",
+ tenure:"2025.11 상무 승진",term:"-",group:["dir","new"],
+ update:{type:"ok",text:"2025.11 승진 명단 확인 <sup class='fnref'>[<a href='#fn-sh-2'>2</a>]</sup> — 세부 보직 비공개"}
+})),
+{name:"박중구",gender:null,birth:null,title:"Master(전문임원)",registered:"미등기",standing:"상근",duty:"기술 전문임원",career:"2025.11 정기 임원인사 신규 Master 선임",tenure:"2025.11 선임",group:["dir","new"],update:{type:"ok",text:"2025.11 승진 명단 확인 <sup class='fnref'>[<a href='#fn-sh-2'>2</a>]</sup>"}}
+];
+
+const PEOPLE_PO = [
+// 등기임원 (이사회) - 2026.03 panocean.com 공식 확인
+{name:"김홍국",gender:"남",birth:"1957-06",title:"회장",registered:"사내이사",standing:"상근",duty:"대표이사",
+ career:"호원대 경영학과, 전북대 경영대학원\n2001년 하림그룹 회장\n2018년 하림지주 대표이사\n2015년~ 팬오션 대표이사 회장",
+ tenure:"2015.07~",term:"2023.06 기준 만료일 2025.03.28",group:["board"],
+ update:{type:"ok",text:"2026.03 팬오션 공식 지배구조 페이지에서 사내이사(대표이사)로 재직 확인"}},
+{name:"안중호",gender:"남",birth:"1962-01",title:"사장",registered:"사내이사",standing:"상근",duty:"대표이사 / 이사회 의장",
+ career:"부산대 영어영문학과, 고려대 Global MBA\n2015년 제2영업부문장, 2019년 영업부문장\n2020년~ 대표이사 사장",
+ tenure:"1985.01~",term:"2023.06 기준 만료일 2026.05.29",group:["board"],
+ update:{type:"ok",text:"2026.06 기사<sup class='fnref'>[<a href='#fn-po-2'>2</a>]</sup>·2026.03 공식 페이지에서 대표이사 겸 이사회 의장으로 재직 확인"}},
+{name:"천세기",gender:"남",birth:"1969-09",title:"부사장",registered:"사내이사",standing:"상근",duty:"윤리경영실장",
+ career:"원광대 무역학과\n전) 하림그룹 부사장\n2019년 하림지주 경영지원팀장\n2015년~ 윤리경영실장",
+ tenure:"2015.07~",term:"2023.06 기준 만료일 2025.03.28",group:["board"],
+ update:{type:"ok",text:"2026.03 공식 지배구조 페이지에서 사내이사(재무·법률 전문)로 재직 확인"}},
+{name:"정학수",gender:"남",birth:"1954-12",title:"이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (감사위원회·보수위원회·사외이사후보추천위원회·ESG위원회·내부거래위원회)",
+ career:"고려대 법과대학\nTEXAS A&M 농업경제학 석사\n2022년 한국농어촌희망재단 이사장",
+ tenure:"2021.03.30~",term:"2027.03.29",group:["board"],
+ update:{type:"ok",text:"2026.03 공식 지배구조 페이지에서 독립이사(농업·곡물 전문)로 재직 확인"}},
+{name:"오광수",gender:"남",birth:"1960-11",title:"이사(前)",registered:"사외이사(前)",standing:"-",duty:"前 사외이사",
+ career:"성균관대 법학과, 법학박사\n전) 법무법인 인월 대표변호사\n전) 법무법인 대륙아주 대표변호사",
+ tenure:"2019.03.27~2025.03(추정)",term:"2023.06 기준 만료일 2025.03.28",group:["board"],
+ update:{type:"watch",text:"2026.03 공식 지배구조 페이지 이사회 명단에 더 이상 포함되지 않음 — 박승오로 교체된 것으로 판단됨"}},
+{name:"구자은",gender:"여",birth:"1972-02",title:"이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (감사위원회·보수위원회·사외이사후보추천위원회·ESG위원회·내부거래위원회)",
+ career:"서울시립대 세무학 박사\n1997~2006 삼일회계법인\n2012년~ 수원대 경영학부 부교수",
+ tenure:"2023.03.29~",term:"2026.03.29",group:["board"],
+ update:{type:"ok",text:"2026.03 공식 지배구조 페이지에서 독립이사(회계·세무 전문)로 재직 확인"}},
+{name:"김영모",gender:"남",birth:"1960-03",title:"이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (감사위원회·보수위원회·사외이사후보추천위원회·ESG위원회·내부거래위원회)",
+ career:"서울대 경영학과\n펜실베니아 주립대 MBA\n2018~2020 산은캐피탈 대표이사 사장",
+ tenure:"2023.06.16~",term:"2026.06.16",group:["board"],
+ update:{type:"ok",text:"2026.03 공식 지배구조 페이지에서 독립이사(금융 전문)로 재직 확인"}},
+{name:"박승오",gender:"남",birth:null,title:"이사",registered:"사외이사",standing:"비상근",duty:"사외이사 (독립이사, 금융 전문)",
+ career:"전) 하나캐피탈 대표이사",
+ tenure:"신규 선임 (2025.03 추정)",term:"-",group:["board","new"],
+ update:{type:"ok",text:"2026.03 팬오션 공식 지배구조 페이지에서 신규 독립이사로 확인 — 오광수 후임으로 판단됨"}},
+
+// 본부장/실장급
+{name:"나병철",gender:"남",birth:"1966-07",title:"전무",registered:"미등기",standing:"상근",duty:"일본 법인장",
+ career:"숭실대 경제학과\n2015년 벌크영업1본부장\n2022년 케이프영업본부장\n2023년~ 일본법인장",tenure:"1991.12~",group:["exec"]},
+{name:"김영석",gender:"남",birth:"1972-07",title:"상무",registered:"미등기",standing:"상근",duty:"경영기획실장",
+ career:"서강대 국어국문학과\n2018년 대형선영업본부장\n2020년 케이프영업본부장\n2022년~ 경영기획실장",tenure:"1996.12~",group:["exec"]},
+{name:"정상진",gender:"남",birth:"1971-11",title:"상무",registered:"미등기",standing:"상근",duty:"대형선영업본부장",
+ career:"경희대 영어영문학과\n2018년 대형선영업2본부 케이프팀장\n2020년 파나막스영업본부장",tenure:"1997.12~",group:["exec","new"],
+ update:{type:"ok",text:"2025.01.01자 상무보→상무 승진 확인 <sup class='fnref'>[<a href='#fn-po-3'>3</a>]</sup>"}},
+{name:"성제용",gender:"남",birth:"1969-03",title:"상무",registered:"미등기",standing:"상근",duty:"LNG사업실장",
+ career:"고려대 지리교육학과\n2013년 탱커영업팀장\n2020년 LNG&케미컬팀장",tenure:"1995.12~",group:["exec","new"],
+ update:{type:"ok",text:"2026.01.01자 상무보→상무 승진 확인 <sup class='fnref'>[<a href='#fn-po-4'>4</a>]</sup>"}},
+{name:"윤석홍",gender:"남",birth:"1966-10",title:"상무보",registered:"미등기",standing:"상근",duty:"영업지원실장",
+ career:"서울대 철학과\n2013년 영업지원실 리서치센터장",tenure:"1990.01~",group:["exec"]},
+{name:"김영주",gender:"여",birth:"1974-12",title:"상무",registered:"미등기",standing:"상근",duty:"법무보험실장",
+ career:"이화여대 법학과\n2012년 법무1팀장",tenure:"2012.02~",group:["exec","new"],
+ update:{type:"ok",text:"2026.01.01자 상무보→상무 승진 확인 <sup class='fnref'>[<a href='#fn-po-4'>4</a>]</sup>"}},
+{name:"서보남",gender:"남",birth:"1973-05",title:"상무",registered:"미등기",standing:"상근",duty:"벌크영업2본부장",
+ career:"고려대 국어교육과\n2018년 경영기획실 해사관리팀장\n2021년 벌크영업본부장",tenure:"1999.03~",group:["exec","new"],
+ update:{type:"ok",text:"2025.01.01자 상무보→상무 승진 확인 <sup class='fnref'>[<a href='#fn-po-3'>3</a>]</sup>"}},
+{name:"김태형",gender:"남",birth:"1972-03",title:"상무보",registered:"미등기",standing:"상근",duty:"재무관리실장",
+ career:"전북대 회계학과\n2011년 재무관리실 회계팀장",tenure:"2000.05~",group:["exec"]},
+{name:"조양진",gender:null,birth:null,title:"상무보",registered:"미등기",standing:"상근",duty:"전용선사업실장",
+ career:"2025.01.01자 실장→상무보 신규 선임",tenure:"2025.01 상무보 선임",group:["exec","new"],
+ update:{type:"ok",text:"2025.01.01자 실장→상무보 승진 확인 <sup class='fnref'>[<a href='#fn-po-3'>3</a>]</sup>"}},
+{name:"신재호",gender:null,birth:null,title:"상무보",registered:"미등기",standing:"상근",duty:"특수선영업본부장",
+ career:"2026.01.01자 상무보 신규 선임. 최성호 상무 후임으로 특수선영업본부장 보임(Megaline 확인, 세부 경력은 보도자료 비공개).",tenure:"2026.01 상무보 선임",group:["exec","new"],
+ update:{type:"ok",text:"2026.01.01자 상무보 신규 선임 확인 <sup class='fnref'>[<a href='#fn-po-4'>4</a>]</sup> — 최성호 상무 후임으로 특수선영업본부장 보임 (Megaline 확인 정보, 개별 보직은 보도자료 비공개)"}},
+{name:"윤정용",gender:null,birth:null,title:"상무보",registered:"미등기",standing:"상근",duty:"보직 미공개",
+ career:"2026.01.01자 상무보 신규 선임",tenure:"2026.01 상무보 선임",group:["exec","new"],
+ update:{type:"ok",text:"2026.01.01자 신규 상무보 선임 확인 <sup class='fnref'>[<a href='#fn-po-4'>4</a>]</sup>"}},
+{name:"김준영",gender:"남",birth:null,title:"상무보",registered:"미등기",standing:"상근",duty:"투자기획팀 책임",
+ career:"김홍국 하림그룹 회장 장남\n2018년 하림지주 경영지원실 과장으로 입사, 2021년 퇴사\n사모펀드 운용사 JKL파트너스 근무\n2026년 초 팬오션 투자기획팀 책임으로 재입사",
+ tenure:"2026.01 상무보 선임",group:["exec","new"],
+ update:{type:"ok",text:"2026.01.01자 상무보 승진 확인 <sup class='fnref'>[<a href='#fn-po-5'>5</a>]</sup>"}}
+];
+
+const COMPANIES = {
+  ho: { people: PEOPLE_HO, extra: "한화오션 임원" },
+  sh: { people: PEOPLE_SH, extra: "삼성중공업 임원" },
+  po: { people: PEOPLE_PO, extra: "팬오션 임원" },
+};
+
+const state = { co: 'ho', filter: { ho:'all', sh:'all', po:'all' }, query: { ho:'', sh:'', po:'' } };
+
+function personCard(co, p){
+  const r = rankOf(p);
+  const div = document.createElement('div');
+  div.className = `card rank-${r}`;
+  div.tabIndex = 0;
+  const badges = [];
+  if(p.group.includes('new')) badges.push(`<span class="badge new">${ICO.star}최근 변동</span>`);
+  if(p.update && p.update.type==='watch') badges.push(`<span class="badge watch">${ICO.alert}재확인 필요</span>`);
+  div.innerHTML = `
+    <div class="rank-tag rank-${r}">${rankLabel(r)}</div>
+    <div class="nm">${p.name}</div>
+    <div class="ttl">${p.title} · ${p.registered}</div>
+    <div class="duty">${p.duty}</div>
+    <div class="badges">${badges.join('')}</div>
+  `;
+  const open = ()=>openModal(co,p);
+  div.addEventListener('click', open);
+  div.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); }});
+  return div;
+}
+
+function renderCompany(co){
+  const grid = document.getElementById(`cardGrid-${co}`);
+  if(!grid) return;
+  grid.innerHTML = '';
+  const q = state.query[co].trim().toLowerCase();
+  const f = state.filter[co];
+  const filtered = COMPANIES[co].people.filter(p=>{
+    const matchFilter = f==='all' || p.group.includes(f);
+    const matchQuery = !q || p.name.toLowerCase().includes(q) || (p.duty && p.duty.toLowerCase().includes(q));
+    return matchFilter && matchQuery;
+  });
+  filtered.forEach(p=>grid.appendChild(personCard(co,p)));
+  const rc = document.getElementById(`resultCount-${co}`);
+  if(rc) rc.textContent = filtered.length;
+}
+
+function wireCompany(co){
+  const panel = document.getElementById(`${co}-profiles`);
+  if(!panel) return;
+  panel.querySelectorAll('.filterbar button[data-f]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      panel.querySelectorAll('.filterbar button[data-f]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      state.filter[co] = btn.dataset.f;
+      renderCompany(co);
+    });
+  });
+  const input = document.getElementById(`searchInput-${co}`);
+  if(input){
+    input.addEventListener('input', e=>{
+      state.query[co] = e.target.value;
+      renderCompany(co);
+    });
+  }
+  // stats
+  const total = COMPANIES[co].people.length;
+  const board = COMPANIES[co].people.filter(p=>p.group.includes('board')).length;
+  const news = COMPANIES[co].people.filter(p=>p.group.includes('new')).length;
+  const elTotal = document.getElementById(`statTotal-${co}`);
+  const elBoard = document.getElementById(`statBoard-${co}`);
+  const elNew = document.getElementById(`statNew-${co}`);
+  if(elTotal) elTotal.textContent = total;
+  if(elBoard) elBoard.textContent = board;
+  if(elNew) elNew.textContent = news;
+}
+
+function openModal(co, p){
+  const r = rankOf(p);
+  const pill = document.getElementById('mRankPill');
+  pill.textContent = rankLabel(r) + (p.group.includes('board') ? ' · 이사회' : '');
+  pill.className = `rank-pill rank-${r}`;
+  document.getElementById('mName').textContent = p.name;
+  document.getElementById('mTitle').textContent = `${p.title} · ${p.registered} · ${p.standing}`;
+  document.getElementById('mPhotoLinks').innerHTML = searchLinks(p.name, COMPANIES[co].extra);
+  document.getElementById('mKv').innerHTML = `
+    <dt>성별</dt><dd>${p.gender || '확인 필요'}</dd>
+    <dt>출생년월</dt><dd>${birthLabel(p.birth)}</dd>
+    <dt>직위</dt><dd>${p.title}</dd>
+    <dt>등기여부</dt><dd>${p.registered}</dd>
+    <dt>상근여부</dt><dd>${p.standing}</dd>
+    <dt>담당업무</dt><dd>${p.duty}</dd>
+    <dt>재직기간</dt><dd>${p.tenure || '-'}</dd>
+    <dt>임기</dt><dd>${p.term || '-'}</dd>
+  `;
+  document.getElementById('mCareer').textContent = p.career || '경력 정보 없음';
+  const noteEl = document.getElementById('mUpdateNote');
+  if(p.update){
+    const ok = p.update.type==='ok';
+    noteEl.innerHTML = `<div class="updated-note ${ok?'ok':'watch'}">${ok?ICO.check:ICO.alert}<span>${p.update.text}</span></div>`;
+  } else {
+    noteEl.innerHTML = `<div class="updated-note watch">${ICO.alert}<span>원본 DART 스냅샷 기준. 최신 재직 여부는 별도 확인이 필요합니다.</span></div>`;
+  }
+  document.getElementById('modalBg').classList.add('open');
+}
+document.getElementById('modalClose').addEventListener('click', ()=>document.getElementById('modalBg').classList.remove('open'));
+document.getElementById('modalBg').addEventListener('click', e=>{ if(e.target.id==='modalBg') e.currentTarget.classList.remove('open'); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ document.getElementById('modalBg').classList.remove('open'); closeDrawer(); }});
+
+['ho','sh','po'].forEach(co=>{ wireCompany(co); renderCompany(co); });
+
+/* ---------- page switching ---------- */
+let currentCo = 'ho';
+const mainArea = document.getElementById('mainArea');
+
+function updateHeader(co){
+  const sec = document.getElementById(`page-${co}`);
+  document.getElementById('pageTitle').textContent = sec.dataset.title;
+  document.getElementById('pageSubtitle').textContent = sec.dataset.subtitle;
+  document.getElementById('pageBadge').textContent = sec.dataset.badge;
+  document.title = sec.dataset.title.replace(/ & 조직도/, '') + ' | 고객사 관계사 업무 현황 및 조직 현황';
+}
+
+function buildDrawerJumps(co){
+  const jumps = [
+    {id:`${co}-summary`, icon:ICO.chart, label:'요약'},
+    {id:`${co}-financials`, icon:ICO.chart, label:'재무 성과'},
+    {id:`${co}-changes`, icon:ICO.star, label:'최근 변동사항'},
+    {id:`${co}-org`, icon:ICO.org, label:'조직도'},
+    {id:`${co}-profiles`, icon:ICO.users, label:'임원 전체'},
+  ];
+  const memoEl = document.getElementById(`${co}-memo`);
+  if(memoEl) jumps.push({id:`${co}-memo`, icon:ICO.pin, label:'실무 접점 메모'});
+  jumps.push({id:`${co}-sources`, icon:ICO.book, label:'출처·각주'});
+  const wrap = document.getElementById('drawerJumps');
+  wrap.innerHTML = jumps.map(j=>`<button class="drawer-jump" data-jump="${j.id}">${j.icon}${j.label}</button>`).join('');
+  wrap.querySelectorAll('.drawer-jump').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      closeDrawer();
+      setTimeout(()=>{
+        const target = document.getElementById(btn.dataset.jump);
+        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      }, 200);
+    });
+  });
+}
+
+function setNavActive(co){
+  document.querySelectorAll('#companyNav button').forEach(b=>b.classList.toggle('active', b.dataset.co===co));
+  document.querySelectorAll('.drawer-co-btn').forEach(b=>b.classList.toggle('active', b.dataset.co===co));
+}
+
+function switchTo(target){
+  if(target === currentCo){ closeDrawer(); return; }
+  const cur = document.getElementById(`page-${currentCo}`);
+  const next = document.getElementById(`page-${target}`);
+  cur.classList.add('leaving');
+  cur.classList.remove('active');
+  updateHeader(target);
+  setNavActive(target);
+  buildDrawerJumps(target);
+  window.scrollTo({top:0, behavior:'smooth'});
+  setTimeout(()=>{
+    cur.style.display = 'none';
+    cur.classList.remove('leaving');
+    next.style.display = 'block';
+    void next.offsetWidth; // reflow
+    next.classList.add('active');
+  }, 260);
+  currentCo = target;
+  closeDrawer();
+}
+
+document.querySelectorAll('#companyNav button, .drawer-co-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>switchTo(btn.dataset.co));
+});
+
+/* ---------- hamburger / drawer ---------- */
+const hamburgerBtn = document.getElementById('hamburgerBtn');
+const drawer = document.getElementById('drawer');
+const drawerOverlay = document.getElementById('drawerOverlay');
+function openDrawer(){
+  hamburgerBtn.classList.add('open');
+  hamburgerBtn.setAttribute('aria-expanded','true');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+  drawerOverlay.classList.add('open');
+}
+function closeDrawer(){
+  hamburgerBtn.classList.remove('open');
+  hamburgerBtn.setAttribute('aria-expanded','false');
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden','true');
+  drawerOverlay.classList.remove('open');
+}
+hamburgerBtn.addEventListener('click', ()=>{
+  if(drawer.classList.contains('open')) closeDrawer(); else openDrawer();
+});
+drawerOverlay.addEventListener('click', closeDrawer);
+
+/* ---------- theme toggle (system / light / dark, in-memory only) ---------- */
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.querySelectorAll('button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const mode = btn.dataset.theme;
+    if(mode === 'system'){
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', mode);
+    }
+    themeToggle.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b===btn));
+  });
+});
+
+updateHeader('ho');
+buildDrawerJumps('ho');
+
+</script>
+</body>
+</html>
